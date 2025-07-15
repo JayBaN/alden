@@ -12,7 +12,10 @@
 opssupport@dnata.com">
       <input type="hidden" id="myInput2" value="DepartureControl@emirates.com">
       <input type="hidden" id="myInput3" value="Loadcontrol@2025">    
-      <input type="hidden" id="myInput4" value="Flydubai@2021">              
+      <input type="hidden" id="myInput4" value="Flydubai@2021">   
+    <input type="hidden" id="myInput5" value="T2FMU@dnata.com
+FMU@dnata.com">
+    
 <p class="h2">Notes</p>
 <ul class="list-unstyled">
           <li><b>FZ RAMP TEAM (Email)</b>
@@ -20,6 +23,14 @@ opssupport@dnata.com">
               <li>rampteam@flydubai.com</li>
               <li>opssupport@dnata.com</li>
               <button onclick="copyText()">Copy</button>
+            </ul>
+          </li>
+
+          <li><b>FMU T2(Email)</b>
+            <ul>
+              <li>rampteam@flydubai.com</li>
+              <li>opssupport@dnata.com</li>
+              <button onclick="copyText5()">Copy</button>
             </ul>
           </li>
 
@@ -113,6 +124,13 @@ links.forEach(url => {
       var copyText4 = document.getElementById("myInput4");
       copyText4.select();
       navigator.clipboard.writeText(copyText4.value);
+      //alert(copyText2.value + " \n\nCopied!: ");
+    }
+
+  function copyText4() {
+      var copyText4 = document.getElementById("myInput5");
+      copyText4.select();
+      navigator.clipboard.writeText(copyText5.value);
       //alert(copyText2.value + " \n\nCopied!: ");
     }
 
