@@ -7,14 +7,20 @@
   </title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+<style type="text/css">
+  strong {
+    color: yellow;
+  }
+</style>
+<body style="background-color: black; color:white;">
       <input type="hidden" id="myInput" value="rampteam@flydubai.com
 opssupport@dnata.com">
       <input type="hidden" id="myInput2" value="DepartureControl@emirates.com">
       <input type="hidden" id="myInput3" value="Loadcontrol@2025">    
       <input type="hidden" id="myInput4" value="Flydubai@2021">   
-    <input type="hidden" id="myInput5" value="T2FMU@dnata.com
-FMU@dnata.com">
+      <input type="hidden" id="myInput5" value="T2FMU@dnata.com
+  FMU@dnata.com">
+      <input type="hidden" id="myInput6" value="Jayban1723!!!">
     
 <p class="h2">Notes</p>
 <ul class="list-unstyled">
@@ -68,6 +74,12 @@ FMU@dnata.com">
 
             </ul>
           </li>
+          <li><b>Personal</b>
+            <ul>
+              <li><button onclick="copyText6()">Copy</button></li>
+
+            </ul>
+          </li>
           <li><b>CLC Contact</b>
             <ul>
               <li>00971 42044139</li>
@@ -89,7 +101,7 @@ FMU@dnata.com">
           </li>
           <li><b>Notes</b>
             <ul>
-              <li><b>VAL BOX:</b> XYM - 9KG / XYP - 5KG</li>
+              <li><b>VAL BOX:</b> <strong>XYM</strong> - 9KG / <strong>XYP</strong> - 5KG</li>
               <li><b>CBBG LS:</b> 
                 <ul>
                   <li>C0/IST/SOC/1/40 </li> 
@@ -97,22 +109,22 @@ FMU@dnata.com">
               </li>
               <li><b>WCLB</b> 
                 <ul>
-                  <li><b>01PC</b> LITHIUM ION BATTERY <b>240WH</b> PAX CARRYING ONBOARD SEAT <b>10F</b>
-                    WCHR LOADED IN HOLD TAG NO <b>EK343370</b>
+                  <li><strong>01PC</strong> LITHIUM ION BATTERY <strong>240WH</strong> PAX CARRYING ONBOARD SEAT <strong>10F</strong>
+                    WCHR LOADED IN HOLD TAG NO <strong>EK343370</strong>
                   </li> 
                 </ul>
               </li>
               <li><b>WCDB</b> 
                 <ul>
-                  <li><b>01</b> WHEELCHAIR BATTERY DRY SEQ<b>159</b> WT: <b>1/45KG</b> TN:<b>FZ726675</b> //
-                    BATTERY WT : <b>1/13KG</b> <b>TN/FZ727233</b>
+                  <li><strong>01</strong> WHEELCHAIR BATTERY DRY SEQ: <strong>159</strong> WT: <strong>1/45KG</strong> TN:<strong>FZ726675</strong> //
+                    BATTERY WT : <strong>1/13KG</strong> <strong>TN/FZ727233</strong>
                   </li> 
                 </ul>
               </li>
               <li><b>FIREARMS</b> 
                 <ul>
-                  <li>FIREARM CHECKED IN UNDER T/N <b>FZ523502</b> LOADED IN <b>C4</b> </li> 
-                  <li>WEA-LASER PISTOL NO AMMUNITION 1PC / 14KG TAG NO-FZ767714 SEQ 85 SEAT 9F</li> 
+                  <li>FIREARM CHECKED IN UNDER T/N <strong>FZ523502</strong> LOADED IN <strong>C4</strong> </li> 
+                  <li><strong>WEA-LASER PISTOL</strong> NO AMMUNITION <strong>1PC</strong> / <strong>14KG</strong> TAG NO-<strong>FZ767714</strong> SEQ <strong>85</strong> SEAT <strong>9F</strong></li> 
                 </ul>
               </li>
               <li><b>Falcon Handling</b> 
@@ -185,6 +197,13 @@ links.forEach(url => {
       var copyText5 = document.getElementById("myInput5");
       copyText5.select();
       navigator.clipboard.writeText(copyText5.value);
+      //alert(copyText2.value + " \n\nCopied!: ");
+    }
+
+    function copyText6() {
+      var copyText6 = document.getElementById("myInput6");
+      copyText6.select();
+      navigator.clipboard.writeText(copyText6.value);
       //alert(copyText2.value + " \n\nCopied!: ");
     }
 
