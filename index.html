@@ -76,7 +76,7 @@ opssupport@dnata.com">
           </li>
           <li><b>Personal</b>
             <ul>
-              <li><button onclick="copyText6()">Copy</button></li>
+              <li><button id="myButton" onclick="copyText6()">Copy</button></li>
 
             </ul>
           </li>
@@ -154,7 +154,7 @@ const links = [
     'https://outlook.office365.com/mail/CLCDXBFZ@emirates.com/AAMkADYxNDdlMDQwLTIwZGMtNDk1Yy05NWNhLWYwZTc4YzViNzc2NgAuAAAAAACQuG6hgU1ITZXy10h%2FcFj4AQANvmyZXWGbTK%2BOZfRNxuyRAAZBDHyPAAA%3D', // CLCDXB FZ
     'https://teams.microsoft.com/v2/?culture=en-us&country=us', // MS TEAMS
     'https://emiratesgroup-my.sharepoint.com/:x:/r/personal/a_ibanez_dnata_com/_layouts/15/Doc.aspx?sourcedoc=%7BDBF04B57-A296-4705-BB50-7941787D014D%7D&file=CHECK%20SHEET%20-%20DEFAULT.xlsx&action=default&mobileredirect=true', // ONE DRIVE
-    '/alden/EFOS.pdf', //EFOS 
+    'EFOS.pdf', //EFOS 
     'https://flydubai.efosweb.com/', //EFOS Weight & Balance
     // 'https://flydubai.efosweb.com/WebMVC/FIDS#/WebMVC/FIDS/configure', //EFOS FIDS
     'https://businessintelligence.flydubai.com/', //FZ Fuel dashboard
@@ -162,6 +162,14 @@ const links = [
     'https://outlook.office365.com/mail/', // Personal Mail
     'https://outlook.office365.com/mail/DLCFAX@dnata.com/', // EFAX
 ];
+
+// CTRL function
+ document.addEventListener('keydown', function(event) {
+    if ((event.altKey || event.metaKey) && event.key === 'q') {
+      document.getElementById('myButton').click(); // Programmatically click the button
+      event.preventDefault(); // Prevent default browser behavior for the shortcut
+    }
+  });
 
 links.forEach(url => {
   window.open(url, '_blank');
@@ -208,10 +216,5 @@ links.forEach(url => {
       //alert(copyText2.value + " \n\nCopied!: ");
     }
 
+
 </script>
-
-        
-
-
-
-
