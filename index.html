@@ -148,6 +148,13 @@ opssupport@dnata.com">
 </html>
 
 <script type="">
+ // CTRL function
+ document.addEventListener('keydown', function(event) {
+    if ((event.altKey || event.metaKey) && event.key === 'q') {
+      document.getElementById('myButton').click(); // Programmatically click the button
+      event.preventDefault(); // Prevent default browser behavior for the shortcut
+    }
+  });
 const links = [
     'https://clcrtcmobilityprod.emirates.group/scsp/', // RTC
     'http://aacs.emirates.com/AACSFuture/AACSWEB/IndexNew.aspx?page=FlightInfo/FlightMonitorFRM_NEW1.aspx', // AACS
@@ -162,14 +169,6 @@ const links = [
     'https://outlook.office365.com/mail/', // Personal Mail
     'https://outlook.office365.com/mail/DLCFAX@dnata.com/', // EFAX
 ];
-
-// CTRL function
- document.addEventListener('keydown', function(event) {
-    if ((event.altKey || event.metaKey) && event.key === 'q') {
-      document.getElementById('myButton').click(); // Programmatically click the button
-      event.preventDefault(); // Prevent default browser behavior for the shortcut
-    }
-  });
 
 links.forEach(url => {
   window.open(url, '_blank');
