@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Dispatch Operations Tracking Table</title>
+    <style>
+        /* Base page styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0d1117; /* Deep dark background */
+            color: #e6edf3; /* Soft white text */
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Container to handle overflow scrolling safely */
+        .table-container {
+            width: 100%;
+            max-width: 1650px; /* Account for all columns uniformly */
+            overflow-x: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        /* Main data grid structural styles */
+        .flight-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #161b22; 
+            font-size: 13px;
+        }
+
+        /* Precise reproduction of headers centered horizontally and vertically */
+        .flight-table th {
+            background-color: #0a0c10;
+            color: #58a6ff; /* Professional blue identifier accent */
+            font-weight: 600;
+            padding: 14px 10px;
+            border: 1px solid #30363d;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* All table data cells aligned strictly in the center */
+        .flight-table td {
+            padding: 10px;
+            border: 1px solid #21262d; 
+            color: #c9d1d9;
+            min-width: 90px;
+            text-align: center;
+            vertical-align: middle;
+            transition: background-color 0.15s ease; /* Smooth hover transition */
+        }
+
+        /* Monospace font for numerical columns keeping center alignment */
+        .flight-table .numeric-center {
+            text-align: center;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+        }
+
+        /* Highlights cells intended for raw physical manual data entry fields */
+        .flight-table td[contenteditable="true"] {
+            cursor: text;
+            transition: background-color 0.15s ease;
+        }
+
+        .flight-table td[contenteditable="true"]:hover {
+            background-color: #21262d;
+        }
+
+        .flight-table td[contenteditable="true"]:focus {
+            background-color: #1f2937;
+            outline: none;
+            box-shadow: inset 0 0 0 2px #58a6ff;
+            color: #ffffff;
+        }
+
+        /* Checkbox styling adjustments */
+        .task-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #58a6ff;
+        }
+
+        /* Interactive status cell tracking transitions */
+        .loadplan-cell, .efiling-cell {
+            transition: background-color 0.2s ease;
+        }
+
+        /* Professional colored background once checkboxes are selected */
+        .loadplan-active {
+            background-color: #112641 !important; /* Professional deep steel blue */
+        }
+
+        .efiling-active {
+            background-color: #0e2a16 !important; /* Professional dark forest emerald */
+        }
+
+        /* Target strike out style specifically for the single flight code cell field */
+        .flight-cell-complete {
+            opacity: 0.45;
+            text-decoration: line-through;
+            font-style: italic;
+        }
+
+        /* Row striping structures */
+        .flight-table tr:nth-child(even) {
+            background-color: #1c2128;
+        }
+
+        /* High-focus, professional semi-translucent slate blue row hover state */
+        .flight-table tr:hover {
+            background-color: rgba(88, 166, 255, 0.08) !important;
+        }
+
+        /* Dynamic visual feedback weights conditional evaluation text styling colors rules */
+        .weight-normal {
+            color: #3fb950 !important; /* Green color rule */
+            font-weight: 600;
+        }
+
+        .weight-alert {
+            color: #ff7b72 !important; /* Red alert color rule */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table class="flight-table">
+            <thead>
+                <tr>
+                    <th>Flight</th>
+                    <th>OFP</th>
+                    <th>RTOW/RZFW</th>
+                    <th>Crew Config</th>
+                    <th>UWS Final</th>
+                    <th>UWS LMC</th>
+                    <th>AZFW</th>
+                    <th>ZFW Δ (Diff)</th>
+                    <th>Final Fuel</th>
+                    <th>LMC Detail</th>
+                    <th>Remarks</th>
+                    <th style="min-width: 70px; width: 90px;">Loadplan</th>
+                    <th style="min-width: 130px; width: 150px;">E-Filing Completed</th>
+                </tr>
+            </thead>
+            <tbody id="flight-data-rows">
+                <!-- Rows dynamically generated here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
+            let rowCount = parseInt(rowCountInput, 10);
+            
+            if (isNaN(rowCount) || rowCount <= 0) {
+                rowCount = 5; 
+            }
+
+            const tbody = document.getElementById("flight-data-rows");
+
+            for (let i = 0; i < rowCount; i++) {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+                    <td contenteditable="true" data-field="flight-cell"></td>
+                    <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
+                    <td class="numeric-center" data-field="diff">—</td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleLoadplanStatus(this)"></td>
+                    <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
+                `;
+                tbody.appendChild(tr);
+            }
+        });
+
+        // Handles Loadplan color updates
+        function toggleLoadplanStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            if (checkbox.checked) {
+                cell.classList.add("loadplan-active");
+            } else {
+                cell.classList.remove("loadplan-active");
+            }
+        }
+
+        // Handles E-filing background and individual Flight text cross-out
+        function toggleEfilingStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            const row = cell.parentNode;
+            const flightCell = row.querySelector('[data-field="flight-cell"]');
+            
+            if (checkbox.checked) {
+                cell.classList.add("efiling-active");
+                flightCell.classList.add("flight-cell-complete");
+            } else {
+                cell.classList.remove("efiling-active");
+                flightCell.classList.remove("flight-cell-complete");
+            }
+        }
+
+        // Processes mathematical variance verification
+        function processWeightVariance(row) {
+            const ezfwCell = row.querySelector('[data-field="ezfw"]');
+            const azfwCell = row.querySelector('[data-field="azfw"]');
+            const diffCell = row.querySelector('[data-field="diff"]');
+
+            const ezfwText = ezfwCell.innerText.trim().replace(/,/g, '');
+            const azfwText = azfwCell.innerText.trim().replace(/,/g, '');
+
+            if (ezfwText === "" && azfwText === "") {
+                azfwCell.className = "numeric-center";
+                diffCell.innerText = "—";
+                return;
+            }
+
+            const ezfw = parseFloat(ezfwText) || 0;
+            const azfw = parseFloat(azfwText) || 0;
+
+            const rawDifference = azfw - ezfw;
+            const absoluteDifference = Math.abs(rawDifference);
+
+            if (rawDifference > 0) {
+                diffCell.innerText = `+${rawDifference}`;
+            } else if (rawDifference < 0) {
+                diffCell.innerText = `${rawDifference}`; 
+            } else {
+                diffCell.innerText = "0";
+            }
+
+            if (absoluteDifference > 1000) {
+                azfwCell.className = "numeric-center weight-alert"; 
+            } else {
+                azfwCell.className = "numeric-center weight-normal"; 
+            }
+        }
+    </script>
+</body>
+</html>
