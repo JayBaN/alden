@@ -111,6 +111,7 @@
             opacity: 0.45;
             text-decoration: line-through;
             font-style: italic;
+            background-color: #287c05;
         }
 
         /* Row striping structures - Cleaner row readability contrast */
@@ -163,39 +164,125 @@
         </table>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
+        <script>
+        // 1. RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
+        (function() {
             let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
             let rowCount = parseInt(rowCountInput, 10);
+            if (isNaN(rowCount) || rowCount <= 0) rowCount = 5;
+
+            // Wait for DOM to be ready to insert rows
+            document.addEventListener("DOMContentLoaded", () => {
+                const tbody = document.getElementById("flight-data-rows");
+                for (let i = 0; i < rowCount; i++) {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td contenteditable="true" data-field="flight-cell"></td>
+                        <td contenteditable="true"></td> 
+                        <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
+                        <td class="numeric-center" data-field="diff">—</td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td contenteditable="true"></td>
+                        <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleLoadplanStatus(this)"></td>
+                        <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+        })();
+
+        // 2. SAFETY FALLBACK FOR WEIGHT VARIANCE
+        if (typeof processWeightVariance !== 'function') {
+            window.processWeightVariance = function(row) {
+                console.log("Processing weight variance data row calculations...");
+            };
+        }
+
+        // 3. GLOBAL ARROW NAVIGATION SYSTEM
+        document.addEventListener('keydown', (e) => {
+            const activeCell = document.activeElement;
             
-            if (isNaN(rowCount) || rowCount <= 0) {
-                rowCount = 5; 
+            if (!activeCell || activeCell.tagName !== 'TD' || activeCell.getAttribute('contenteditable') !== 'true') {
+                return;
             }
 
-            const tbody = document.getElementById("flight-data-rows");
+            const currentCellIndex = activeCell.cellIndex;
+            const currentRow = activeCell.parentNode;
+            let targetCell = null;
 
-            for (let i = 0; i < rowCount; i++) {
-                const tr = document.createElement("tr");
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault(); 
+                    const prevRow = currentRow.previousElementSibling;
+                    if (prevRow) targetCell = prevRow.cells[currentCellIndex];
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault(); 
+                    const nextRow = currentRow.nextElementSibling;
+                    if (nextRow) targetCell = nextRow.cells[currentCellIndex];
+                    break;
+                    
+                case 'ArrowLeft':
+                    const prevCell = activeCell.previousElementSibling;
+                    if (prevCell && prevCell.getAttribute('contenteditable') === 'true') {
+                        e.preventDefault();
+                        targetCell = prevCell;
+                    }
+                    break;
+                    
+                case 'ArrowRight':
+                    const nextCell = activeCell.nextElementSibling;
+                    if (nextCell && nextCell.getAttribute('contenteditable') === 'true') {
+                        e.preventDefault();
+                        targetCell = nextCell;
+                    }
+                    break;
+                    
+                default:
+                    return; 
+            }
 
-                tr.innerHTML = `
-                    <td contenteditable="true" data-field="flight-cell"></td>
-                    <td contenteditable="true"></td> <!-- Editable cell for A/C REG row structure -->
-                    <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
-                    <td class="numeric-center" data-field="diff">—</td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleLoadplanStatus(this)"></td>
-                    <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
-                `;
-                tbody.appendChild(tr);
+            if (targetCell && targetCell.getAttribute('contenteditable') === 'true') {
+                targetCell.focus();
             }
         });
+
+        // 4. LOADPLAN STATUS
+        function toggleLoadplanStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            if (checkbox.checked) {
+                cell.classList.add("loadplan-active");
+            } else {
+                cell.classList.remove("loadplan-active");
+            }
+        }
+
+        // 5. E-FILING STATUS
+        function toggleEfilingStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            const row = cell.parentNode;
+            const flightCell = row.querySelector('[data-field="flight-cell"]');
+            
+            if (checkbox.checked) {
+                cell.classList.add("efiling-active");
+                if (flightCell) flightCell.classList.add("flight-cell-complete");
+            } else {
+                cell.classList.remove("efiling-active");
+                if (flightCell) flightCell.classList.remove("flight-cell-complete");
+            }
+        }
+    </script>
+
+
+    <script>
+
 
         // Handles Loadplan color updates
         function toggleLoadplanStatus(checkbox) {
@@ -240,16 +327,41 @@
             }
 
             const difference = azfw - ezfw;
+            const absoluteDifference = Math.abs(difference); 
+            
+            // Choose the professional indicator arrow based on deviation direction
+            let indicator = "";
+            if (difference > 0) {
+                indicator = "▲ "; // Up arrow for positive weight gain
+            } else if (difference < 0) {
+                indicator = "▼ "; // Down arrow for negative weight drops
+            }
 
-            if (difference === 0) {
-                diffCell.innerText = "0";
-                diffCell.className = "numeric-center weight-normal";
+            // Displays the arrow prefix, absolute number, and standard unit tag seamlessly
+            diffCell.innerText = indicator + absoluteDifference + " KG";
+
+            // Evaluate absolute threshold criteria (+ or - 1000)
+            if (absoluteDifference >= 1000) {
+                diffCell.className = "numeric-center weight-alert";  // Turns red for critical gaps >= 1000
             } else {
-                const prefix = difference > 0 ? "+" : "";
-                diffCell.innerText = prefix + difference;
-                diffCell.className = "numeric-center weight-alert";
+                diffCell.className = "numeric-center weight-normal"; // Turns green for safe variations under 1000
             }
         }
+
+        // --- FORCE PLAIN TEXT ONLY ON PASTE ---
+        document.addEventListener('paste', (e) => {
+            // Only intercept if pasting inside an editable table cell
+            const activeCell = document.activeElement;
+            if (activeCell && activeCell.tagName === 'TD' && activeCell.getAttribute('contenteditable') === 'true') {
+                e.preventDefault(); // Stop the default rich-text paste action
+
+                // Get text representation of clipboard data
+                const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+                // Insert the plain text into the current cursor position
+                document.execCommand('insertText', false, text);
+            }
+        });
     </script>
 </body>
 </html>
