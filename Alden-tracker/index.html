@@ -14,12 +14,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-transform: uppercase;
         }
 
         /* Container to handle overflow scrolling safely */
         .table-container {
             width: 100%;
-            max-width: 1650px; /* Account for all columns uniformly */
+            max-width: 1800px; /* Account for all columns uniformly */
             overflow-x: auto;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
             border-radius: 8px;
@@ -49,17 +50,40 @@
             vertical-align: middle;
         }
 
-        /* All table data cells aligned strictly in the center */
+       /* All table data cells aligned strictly in the center */
         .flight-table td {
             padding: 10px;
             border: 1px solid #373e47; 
-            color: #e6edf3; /* High-visibility white/silver text */
-            min-width: 90px;
-            font-size: 18px; /* Data cells remain 18px */
+            color: #e6edf3;
             text-align: center;
+            font-size: 18px; /* Data cells remain 18px */
             vertical-align: middle;
-            transition: background-color 0.15s ease; /* Smooth hover transition */
         }
+
+        /* --- Drag and Drop Visual Feedback Styles --- */
+        .flight-table tbody tr {
+            cursor: grab;
+            transition: background-color 0.15s ease;
+        }
+
+        .flight-table tbody tr:active {
+            cursor: grabbing;
+        }
+
+        /* Styling for the row currently being dragged */
+        .flight-table tbody tr.dragging {
+            opacity: 0.4;
+            background-color: #2d333b;
+        }
+
+        /* Visual indicator when hovering over a valid drop target */
+        .flight-table tbody tr.drag-over {
+            background-color: #26384f;
+            outline: 2px dashed #58a6ff;
+        }
+
+
+
 
         /* Monospace font for numerical columns keeping center alignment */
         .flight-table .numeric-center {
@@ -99,7 +123,7 @@
 
         /* Professional colored background once checkboxes are selected */
         .loadplan-active {
-            background-color: #1a3a5f !important; /* Slightly elevated professional deep steel blue */
+            background-color: #7a8749 !important; /* Slightly elevated professional deep steel blue */
         }
 
         .efiling-active {
@@ -111,7 +135,8 @@
             opacity: 0.45;
             text-decoration: line-through;
             font-style: italic;
-            background-color: #287c05;
+            /*background-color: #287c05;*/
+            background-color: #000000;
         }
 
         /* Row striping structures - Cleaner row readability contrast */
@@ -134,14 +159,58 @@
             color: #f47067 !important; /* Enhanced red tint for better contrast */
             font-weight: bold;
         }
+
+                /* New Highlight Button Layout Style */
+        .btn-highlight {
+            background-color: #31363e;
+            color: #adbac7;
+            border: 1px solid #444c56;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-highlight:hover {
+            background-color: #444c56;
+            color: #ffffff;
+            border-color: #58a6ff;
+        }
+
+        /* Active Highlight Row State - Vivid Dark Amber/Slate Blend */
+        .flight-table tbody tr.row-highlighted {
+            background-color: #443e2a !important;
+            border-left: 4px solid #fbbf24;
+        }
+
+        /* Remove surrounding borders from the Focus header specifically */
+        .flight-table th:nth-child(1) {
+            border: none;
+            /* Keeps thin top/bottom borders matching your theme if needed, or remove completely */
+            border-top: 1px solid #444c56;
+            border-bottom: 1px solid #444c56;
+        }
+
+
     </style>
 </head>
 <body>
 
+
+<tr draggable="true">
+    <!-- Keep your original flight columns exactly as they are here -->
+</tr>
+<tr draggable="true">
+    <!-- Keep your original flight columns exactly as they are here -->
+</tr>
+
+
     <div class="table-container">
         <table class="flight-table">
             <thead>
-                <tr>
+                <tr draggable="true">
+                    <th style="width: 50px;"></th> <!-- Add this line here -->
                     <th>Flight</th>
                     <th>A/C REG</th> <!-- Added A/C REG column beside Flight -->
                     <th>OFP</th>
@@ -154,8 +223,8 @@
                     <th>Final Fuel</th>
                     <th>LMC Detail</th>
                     <th>Remarks</th>
-                    <th style="min-width: 70px; width: 90px;">Loadplan</th>
-                    <th style="min-width: 130px; width: 150px;">E-Filing Completed</th>
+                    <th style="min-width: 20px; width: 30px;">Loadplan</th>
+                    <th style="min-width: 20px; width: 40px;">E-Filing Completed</th>
                 </tr>
             </thead>
             <tbody id="flight-data-rows">
@@ -165,7 +234,7 @@
     </div>
 
         <script>
-        // 1. RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
+        // 1. Flight rows creation! RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
         (function() {
             let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
             let rowCount = parseInt(rowCountInput, 10);
@@ -176,8 +245,10 @@
                 const tbody = document.getElementById("flight-data-rows");
                 for (let i = 0; i < rowCount; i++) {
                     const tr = document.createElement("tr");
+                    // Inside your row loop, ensure your string template looks like this:
                     tr.innerHTML = `
-                        <td contenteditable="true" data-field="flight-cell"></td>
+                        <td><button class="btn-highlight" onclick="toggleRowHighlight(this)">★</button></td> <!-- Add this line here -->
+                        <td contenteditable="true" data-field="flight-cell" class="prefix-cell" id="flightHeader" >FZ&nbsp;</td>
                         <td contenteditable="true"></td> 
                         <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
                         <td contenteditable="true"></td>
@@ -186,10 +257,10 @@
                         <td contenteditable="true"></td>
                         <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
                         <td class="numeric-center" data-field="diff">—</td>
+                        <td contenteditable="true" class="numeric-center" style="color:#ffd150; font-weight:bold;"></td>
                         <td contenteditable="true"></td>
                         <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleLoadplanStatus(this)"></td>
+                        <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleCellClass(this, 'loadplan-active')"></td>
                         <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
                     `;
                     tbody.appendChild(tr);
@@ -278,10 +349,6 @@
                 if (flightCell) flightCell.classList.remove("flight-cell-complete");
             }
         }
-    </script>
-
-
-    <script>
 
 
         // Handles Loadplan color updates
@@ -362,6 +429,281 @@
                 document.execCommand('insertText', false, text);
             }
         });
+
+
+        function setupTableActionDelegation() {
+        const tbody = document.getElementById("flight-data-rows");
+
+        // 1. Monitors checkbox changes to toggle green/emerald backgrounds safely
+        tbody.addEventListener("change", function(e) {
+            const target = e.target;
+            if (target.classList.contains("loadplan-chk")) {
+                target.closest("td").classList.toggle("loadplan-active", target.checked);
+            }
+            if (target.classList.contains("efiling-chk")) {
+                const td = target.closest("td");
+                const tr = target.closest("tr");
+                const flightCell = tr.querySelector(".flight-code-cell");
+                
+                td.classList.toggle("efiling-active", target.checked);
+                if (flightCell) {
+                    flightCell.classList.toggle("flight-cell-complete", target.checked);
+                }
+            }
+        });
+
+        // 2. Monitors Focus button clicks to toggle amber row highlight accents
+        tbody.addEventListener("click", function(e) {
+            if (e.target.classList.contains("btn-highlight")) {
+                e.target.closest("tr").classList.toggle("row-highlighted");
+            }
+        });
+    }
+
+        function setupSafeDragAndDrop() {
+            const tbody = document.getElementById("flight-data-rows");
+            let draggedRow = null;
+
+            tbody.addEventListener("dragstart", (e) => {
+                draggedRow = e.target.closest("tr");
+                if (draggedRow) draggedRow.classList.add("dragging");
+            });
+
+            tbody.addEventListener("dragend", () => {
+                if (draggedRow) draggedRow.classList.remove("dragging");
+                document.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
+                draggedRow = null;
+            });
+
+            tbody.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest("tr");
+                if (targetRow && targetRow !== draggedRow && targetRow.parentNode === tbody) {
+                    targetRow.classList.add("drag-over");
+                }
+            });
+
+            tbody.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest("tr");
+                if (targetRow && draggedRow && targetRow !== draggedRow) {
+                    targetRow.classList.remove("drag-over");
+                    
+                    // Calculate cursor placement height over the active target row
+                    const bounding = targetRow.getBoundingClientRect();
+                    const offset = e.clientY - bounding.top;
+                    
+                    // CRUCIAL BUG FIX: Move memory pointers directly instead of text mutations
+                    if (offset > bounding.height / 2) {
+                        targetRow.after(draggedRow);
+                    } else {
+                        targetRow.before(draggedRow);
+                    }
+                }
+            });
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const tbody = document.getElementById("flight-data-rows");
+
+            // Click Event: Snap the typing cursor to the end of the text
+            tbody.addEventListener("click", (e) => {
+                const cell = e.target.closest('[data-field="flight-cell"]');
+                if (!cell) return;
+
+                // Force cursor to the end of the text string
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(cell);
+                range.collapse(false); // false collapses the range to the end
+                sel.removeAllRanges();
+                sel.addRange(range);
+            });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const tbody = document.getElementById("flight-data-rows");
+            const prefixLength = 3; // Length of "FZ "
+
+            // Helper function to force cursor to the end of the text
+            function forceCursorToEnd(cell) {
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(cell);
+                range.collapse(false); // collapse to the end
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            // Handle both Clicks and Arrow Key navigation
+            ["click", "keyup"].forEach(eventType => {
+                tbody.addEventListener(eventType, (e) => {
+                    const cell = e.target.closest('[data-field="flight-cell"]');
+                    if (!cell) return;
+
+                    const sel = window.getSelection();
+                    
+                    // Check if the cursor position is inside or before the "FZ " prefix
+                    if (sel.anchorNode && (sel.anchorNode === cell || cell.contains(sel.anchorNode))) {
+                        if (sel.anchorOffset < prefixLength) {
+                            forceCursorToEnd(cell);
+                        }
+                    }
+                });
+            });
+        });
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+        const tbody = document.querySelector('.flight-table tbody');
+        if (!tbody) return;
+
+        // 1. Automatically inject draggable="true" into all existing table rows
+        const rows = tbody.querySelectorAll('tr');
+        rows.forEach(row => {
+            row.setAttribute('draggable', 'true');
+        });
+
+        // --- Keep your drag and drop logic below this line ---
+        let draggedRow = null;
+
+        tbody.addEventListener('dragstart', (e) => {
+            const row = e.target.closest('tr');
+            if (!row) return;
+            draggedRow = row;
+            row.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', '');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        tbody.addEventListener('dragend', (e) => {
+            const row = e.target.closest('tr');
+            if (row) row.classList.remove('dragging');
+            document.querySelectorAll('.flight-table tbody tr').forEach(el => el.classList.remove('drag-over'));
+            draggedRow = null;
+        });
+
+        tbody.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const row = e.target.closest('tr');
+            if (!row || row === draggedRow) return;
+            e.dataTransfer.dropEffect = 'move';
+        });
+
+        tbody.addEventListener('dragenter', (e) => {
+            const row = e.target.closest('tr');
+            if (!row || row === draggedRow) return;
+            row.classList.add('drag-over');
+        });
+
+        tbody.addEventListener('dragleave', (e) => {
+            const row = e.target.closest('tr');
+            if (row) row.classList.remove('drag-over');
+        });
+
+        tbody.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const targetRow = e.target.closest('tr');
+            if (!targetRow || targetRow === draggedRow) return;
+
+            targetRow.classList.remove('drag-over');
+
+            // Swap the inner HTML content
+            const tempHTML = draggedRow.innerHTML;
+            draggedRow.innerHTML = targetRow.innerHTML;
+            targetRow.innerHTML = tempHTML;
+        });
+    });
+
+
+        // Safe status color backdrop toggler
+        function toggleCellClass(checkbox, className) {
+            const td = checkbox.parentNode;
+            if (checkbox.checked) {
+                td.classList.add(className);
+            } else {
+                td.classList.remove(className);
+            }
+        }
+
+
+        // Node-Safe Drag Engine (Preserves checked elements and written cell data)
+        function initializeDragAndDropEngine(tbody) {
+            let draggedRow = null;
+
+            tbody.addEventListener('dragstart', (e) => {
+                const row = e.target.closest('tr');
+                
+                // Block dragging if someone is actively typing inside an editable cell text field
+                if (!row || document.activeElement.getAttribute('contenteditable') === 'true') {
+                    e.preventDefault();
+                    return;
+                }
+                draggedRow = row;
+                row.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', '');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            tbody.addEventListener('dragend', (e) => {
+                const row = e.target.closest('tr');
+                if (row) row.classList.remove('dragging');
+                document.querySelectorAll('#flight-data-rows tr').forEach(el => el.classList.remove('drag-over'));
+                draggedRow = null;
+            });
+
+            tbody.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const row = e.target.closest('tr');
+                if (!row || row === draggedRow) return;
+                e.dataTransfer.dropEffect = 'move';
+            });
+
+            tbody.addEventListener('dragenter', (e) => {
+                const row = e.target.closest('tr');
+                if (!row || row === draggedRow) return;
+                row.classList.add('drag-over');
+            });
+
+            tbody.addEventListener('dragleave', (e) => {
+                const row = e.target.closest('tr');
+                if (row) row.classList.remove('drag-over');
+            });
+
+            tbody.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest('tr');
+                if (!targetRow || targetRow === draggedRow) return;
+
+                targetRow.classList.remove('drag-over');
+
+                const allRows = Array.from(tbody.children);
+                const draggedIndex = allRows.indexOf(draggedRow);
+                const targetIndex = allRows.indexOf(targetRow);
+
+                // Moves the actual row containers in the DOM tree, keeping all ticks and text 100% safe
+                if (draggedIndex < targetIndex) {
+                    tbody.insertBefore(draggedRow, targetRow.nextSibling);
+                } else {
+                    tbody.insertBefore(draggedRow, targetRow);
+                }
+            });
+        }
+
+        // Click handler function to highlight/unhighlight flight rows instantly
+        function toggleRowHighlight(button) {
+            const row = button.closest('tr');
+            if (row) {
+                row.classList.toggle('row-highlighted');
+                // Switch star symbols to provide visual feedback
+                button.textContent = row.classList.contains('row-highlighted') ? '⭐' : '★';
+            }
+        }
+
     </script>
 </body>
 </html>
