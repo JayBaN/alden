@@ -344,16 +344,6 @@
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 .search-container {
     margin-bottom: 15px;
     display: flex;
@@ -398,13 +388,24 @@
 <tr draggable="true">
     <!-- Keep your original flight columns exactly as they are here -->
 </tr>
-
 <div class="search-container">
+    <div style="display: flex; align-items: center; justify-content: flex-start; gap: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width: 100%;">
+
+    <div style="display: flex; margin-right: 5px; gap: 8px; background-color: #1a1e24; border: 1px solid #2b303c; padding: 6px 14px; border-radius: 4px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); white-space: nowrap;">
+        <!-- Glowing Green Status Indicator -->
+        <div style="width: 7px; height: 7px; background-color: #40c057; border-radius: 50%; box-shadow: 0 0 8px #40c057;"></div>
+        <!-- Your Name -->
+        <span style="color: #ffffff; font-weight: 700; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;">PROPERTY OF ALDEN JR</span>
+    </div>
+
+    <!-- Paste your existing action buttons directly here inside this same container -->
+
+</div>
     <select id="search-column-mode" class="search-mode-select">
         <option value="flight-only">Search by: Flight Name</option>
         <option value="all-columns">Search by: All Columns</option>
     </select>
-    <input type="text" id="dashboard-search-field" class="global-search-bar" placeholder="🔍 Enter filter keyword...">
+    <input type="text" id="dashboard-search-field" class="global-search-bar" placeholder="🔍 Enter Flight Number...">
 </div>
 <!-- Put this button right above your flight tracker table layout -->
     <div class="table-container" id="myTable">
@@ -419,6 +420,33 @@
         <label for="operationalNotes">Flight Notes:</label>
         <input type="text" id="operationalNotes" placeholder="ENTER NOTES HERE..." autocomplete="off">
     </div>
+     <!-- Search E-folder -->
+    <form onsubmit="openFormLink(event)" style="margin-left: 8px;display: inline-flex; align-items: center; gap: 8px; background-color: #1a1e24; padding: 4px 8px; border-radius: 4px; border: 1px solid #2b303c; font-family: 'Segoe UI', sans-serif; vertical-align: middle; margin-right: 10px;">
+        
+        <!-- FLT Field Group -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <label for="flightNumber" style="color: #adb5bd; font-size: 11px; font-weight: 700; text-transform: uppercase;">FLT:</label>
+            <input type="text" id="flightNumber" placeholder="Number" required 
+                   style="background-color: #2b303c; color: #ffffff; border: 1px solid #495057; border-radius: 3px; padding: 3px 6px; font-size: 12px; width: 50px; text-align: center; outline: none;"
+                   onfocus="this.style.borderColor='#4dabf7'" onblur="this.style.borderColor='#495057'">
+        </div>
+
+        <!-- STN Field Group -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <label for="outstation" style="color: #adb5bd; font-size: 11px; font-weight: 700; text-transform: uppercase;">STN:</label>
+            <input type="text" id="outstation" value="DXB" placeholder="DXB" maxlength="3" minlength="3" required 
+                   style="background-color: #2b303c; color: #ffffff; border: 1px solid #495057; border-radius: 3px; padding: 3px 6px; font-size: 12px; width: 42px; text-transform: uppercase; text-align: center; outline: none;"
+                   onfocus="this.style.borderColor='#4dabf7'" onblur="this.style.borderColor='#495057'">
+        </div>
+
+        <!-- Open Action Button -->
+        <button type="submit" 
+                style="background-color: #228be6; color: #ffffff; border: none; border-radius: 3px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap;"
+                onmouseover="this.style.backgroundColor='#1c7ed6'" onmouseout="this.style.backgroundColor='#228be6'">
+            Open Flight E-Folder
+        </button>
+    </form>
+
     <a href="https://jayban.github.io/alden/UWS-tracker/" target="_blank" style="color:white;float:right;">(x) NOT ALLOWED BEWARE! (x)</a>
         <table class="flight-table">
             <thead>
@@ -437,7 +465,6 @@
                     <th>Final Fuel</th>
                     <th>LMC Detail</th>
                     <th>Remarks</th>
-                    
                     <th style="min-width: 20px; width: 40px;">E-Filing Completed</th>
                 </tr>
             </thead>
@@ -448,7 +475,7 @@
         </table>
         <button type="button" id="addNewRowBtn" style="background-color: #565654; color: white; margin-top: 10px; border: none;  border-radius: 4px; cursor: pointer; font-weight: bold; padding: 7px; margin-bottom:7px; margin-left: 8px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ADD ROW
-            </button>
+        </button>
     </div>
 
         <script>
@@ -481,6 +508,7 @@
                 `;
                 tbodyElement.appendChild(tr);
             }
+            // <button onclick="generateAndOpenLink(this)" style="margin-left:13px; margin-bottom:15px;">📂</button>
 
             // 2. INITIAL USER PROMPT SETUP
             let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
@@ -569,11 +597,6 @@
         console.error(err);
     });
 }
-
-
-
-
-
 
         // 2. SAFETY FALLBACK FOR WEIGHT VARIANCE
         if (typeof processWeightVariance !== 'function') {
@@ -1094,31 +1117,6 @@
     }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ==========================================
 // HIGH-PERFORMANCE CONTENTEDITABLE SEARCH ENGINE
 // ==========================================
@@ -1160,6 +1158,73 @@ function executeFilteredSearch() {
 document.getElementById("dashboard-search-field").addEventListener("input", executeFilteredSearch);
 document.getElementById("search-column-mode").addEventListener("change", executeFilteredSearch);
 
+
+
+    function generateAndOpenLink(button) {
+        // 1. Get today's date formatted as 2-digit day + 3-letter month (e.g., "01OCT")
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const formattedToday = day + months[today.getMonth()];
+
+        // 2. Define the baseline template
+        const baseTemplate = `FZ%20Electronic%20Flight%20Files/Forms/AllItems.aspx?id=%2Fteams%2FFZeFiling%2FFZ%20Electronic%20Flight%20Files%2FFZ%2F${formattedToday}%2FFZ991%20${formattedToday}%20DXB&viewid=e1f93d5d-7769-4fa4-8b45-f83eedd9fefc`;
+        
+        // 3. Find the row belonging to the clicked button
+        const row = button.closest('tr');
+        
+        // 4. Look for the cell using its class name inside this specific row
+        let cell = row.querySelector('.flight-code-cell');
+        let cellValue = cell ? cell.textContent.trim() : "";
+        
+        // 5. Strip any "FZ" prefix if present
+        let flightNumberOnly = cellValue.toUpperCase().replace(/\s+/g, '').replace('FZ', '').padStart(3, '0');
+
+        // 6. Replace '991' in the string template with the row's flight number
+        let dynamicUrl = 'https://emiratesgroup.sharepoint.com/teams/FZeFiling/' + baseTemplate.replace('991', flightNumberOnly);
+
+        // 7. Open the final generated SharePoint link
+        window.open(dynamicUrl, '_blank');
+    }
+
+    // Automatically pre-populates the date field to today's date when the page loads
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('flightDate').value = today;
+    });
+
+    function openFormLink(event) {
+        // 1. Prevent the browser from refreshing the page
+        event.preventDefault();
+
+        // 2. Fetch the values directly from the form inputs
+        const flightInput = document.getElementById('flightNumber').value;
+        const outstationInput = document.getElementById('outstation').value;
+
+        // Safety check to ensure fields are not empty
+        if (!flightInput || !outstationInput) return;
+
+        // 3. Automatically get today's date and format as DDMMM (e.g., "01OCT")
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const formattedDate = day + months[today.getMonth()];
+
+        // 4. Sanitize Flight Number (e.g., "FZ 905" -> "905")
+        let flightNumberOnly = flightInput.toUpperCase().replace(/\s+/g, '').replace('FZ', '').padStart(3, '0');
+
+        // 5. Sanitize Outstation Code (e.g., "jib" -> "JIB")
+        let outstationCode = outstationInput.toUpperCase().trim();
+
+        // 6. Build the destination baseline path with your dynamic parameters
+        const baseTemplate = `FZ%20Electronic%20Flight%20Files/Forms/AllItems.aspx?id=%2Fteams%2FFZeFiling%2FFZ%20Electronic%20Flight%20Files%2FFZ%2F${formattedDate}%2FFZ${flightNumberOnly}%20${formattedDate}%20${outstationCode}&viewid=e1f93d5d-7769-4fa4-8b45-f83eedd9fefc`;
+        
+        // 7. Combine into the absolute SharePoint URL
+        let finalUrl = 'https://emiratesgroup.sharepoint.com/teams/FZeFiling/' + baseTemplate;
+
+        // 8. Open the complete dynamic link in a clean browser tab
+        window.open(finalUrl, '_blank');
+    }
 
     </script>
 </body>
