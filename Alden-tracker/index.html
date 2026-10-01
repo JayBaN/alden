@@ -193,115 +193,81 @@
         }
 
 
-        /* Single Line Notes Wrapper */
-        .single-line-notes {
-            display: inline-flex;
-            align-items: center;
-            background-color: #22272e; /* Matches your table rows */
-            border: 1px solid #444c56;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-left: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            vertical-align: middle;
-            margin-top: 12px;
-        }
+/* Single Line Notes Wrapper */
+.single-line-notes {
+    display: inline-flex;
+    align-items: center;
+    background-color: #22272e; /* Matches your table rows */
+    border: 1px solid #444c56;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    vertical-align: middle;
+    margin-top: 12px;
+}
 
-        /* Inline Label Identifier */
-        .single-line-notes label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #58a6ff; /* Signature blue identifier header */
-            letter-spacing: 0.5px;
-            margin-right: 10px;
-            white-space: nowrap;
-        }
+/* Inline Label Identifier */
+.single-line-notes label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #58a6ff; /* Signature blue identifier header */
+    letter-spacing: 0.5px;
+    margin-right: 10px;
+    white-space: nowrap;
+}
 
-        /* Flat Single Row Input Area */
-        .single-line-notes input[type="text"] {
-            background: none;
-            border: none;
-            color: #e6edf3;
-            font-family: inherit;
-            font-size: 13px;
-            width: 550px; /* Adjust width to fit your spacing layout */
-            padding: 4px 0;
-            text-transform: uppercase; /* Uniform uppercase tracking force */
-        }
+/* Flat Single Row Input Area */
+.single-line-notes input[type="text"] {
+    background: none;
+    border: none;
+    color: #e6edf3;
+    font-family: inherit;
+    font-size: 13px;
+    width: 550px; /* Adjust width to fit your spacing layout */
+    padding: 4px 0;
+    text-transform: uppercase; /* Uniform uppercase tracking force */
+}
 
-        /* Reset focus ring boundaries since container handled elevation */
-        .single-line-notes input[type="text"]:focus {
-            outline: none;
-        }
+/* Reset focus ring boundaries since container handled elevation */
+.single-line-notes input[type="text"]:focus {
+    outline: none;
+}
 
-        /* Dynamic glow effect specifically when user is actively typing */
-        .single-line-notes:focus-within {
-            border-color: #58a6ff;
-            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
-            background-color: #1c2128;
-        }
+/* Dynamic glow effect specifically when user is actively typing */
+.single-line-notes:focus-within {
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
+    background-color: #1c2128;
+}
 
-        /* Styled Placeholder Text */
-        .single-line-notes input::placeholder {
-            color: #768390;
-            font-size: 11px;
-        }
-        .excelButton {
-            background-color: #107c41; 
-            color: white; margin-left: 
-            10px; margin-top: 10px; 
-            border: none; padding: 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-bottom: 15px;
-        }
-        .createFolder {
-            background-color: #55581f;
-            color: white; 
-            margin-left: 10px; 
-            margin-top: 10px; 
-            border: none; 
-            padding: 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-bottom: 15px;
-        }
-        .AddbuttonRow {
-            background-color: #565654; 
-            color: white; 
-            margin-top: 10px; 
-            border: none;  
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            padding: 7px;
-            margin-bottom:7px; 
-            margin-left: 8px;
-            float: left;
-        }
-        .totalFlights {
-            float:left;
-            margin-left: 10px;
-            margin-bottom:40px; 
-            color: white;
-        }
-</style>
+/* Styled Placeholder Text */
+.single-line-notes input::placeholder {
+    color: #768390;
+    font-size: 11px;
+}
+    </style>
 </head>
 <body>
+
+
+<tr draggable="true">
+    <!-- Keep your original flight columns exactly as they are here -->
+</tr>
+<tr draggable="true">
+    <!-- Keep your original flight columns exactly as they are here -->
+</tr>
 <!-- Put this button right above your flight tracker table layout -->
     <div class="table-container">
-    <button type="button" id="excelScriptBtn" class="excelButton">
+    <button type="button" id="excelScriptBtn" style="background-color: #107c41; color: white; margin-left: 10px; margin-top: 10px; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 15px;">
         Create Flight Checksheet
     </button>
-    <button class="btn-action createFolder" onclick="generateFolderBatchFile()">Create Folder 📂</button>
+    <button class="btn-action" style="background-color: #55581f; color: white; margin-left: 10px; margin-top: 10px; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 15px;" onclick="generateFolderBatchFile()">Create Folder 📂</button>
 
     <div class="single-line-notes">
         <label for="operationalNotes">Flight Notes:</label>
         <input type="text" id="operationalNotes" placeholder="ENTER NOTES HERE..." autocomplete="off">
-
     </div>
         <table class="flight-table">
             <thead>
@@ -320,6 +286,7 @@
                     <th>Final Fuel</th>
                     <th>LMC Detail</th>
                     <th>Remarks</th>
+                    
                     <th style="min-width: 20px; width: 40px;">E-Filing Completed</th>
                 </tr>
             </thead>
@@ -328,13 +295,17 @@
 
             </tbody>
         </table>
-        <button type="button" id="addNewRowBtn" class="AddbuttonRow">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ADD ROW
-        </button>
-        <p class="totalFlights">Total Flights: <b id="totalFlights"></b> </p>
+        <button type="button" id="addNewRowBtn" style="background-color: #565654; color: white; margin-top: 10px; border: none;  border-radius: 4px; cursor: pointer; font-weight: bold; padding: 7px; margin-bottom:7px; margin-left: 8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ADD ROW
+            </button>
     </div>
+
         <script>
         // 1. Flight rows creation! RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
+
+
+        // const sampleFlights = ["FZ991", "FZ144", "FZ337", "FZ1133", "FZ974", "FZ966", "FZ978", "FZ1716", "FZ391"];
+
         (function() {
             // 1. REUSABLE ROW TEMPLATE FUNCTION
             function buildAndAppendRow(tbodyElement) {
@@ -360,15 +331,6 @@
                 tbodyElement.appendChild(tr);
             }
 
-            // Helper function to recount table rows live from the DOM
-            function updateFlightCounter(tbodyElement) {
-                const totalFlightsElement = document.getElementById("totalFlights");
-                if (totalFlightsElement) {
-                    // This physically counts how many 'tr' rows exist inside your tbody
-                    totalFlightsElement.textContent = tbodyElement.children.length;
-                }
-            }
-
             // 2. INITIAL USER PROMPT SETUP
             let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
             let rowCount = parseInt(rowCountInput, 10);
@@ -383,86 +345,83 @@
                     buildAndAppendRow(tbody);
                 }
 
-                // Run the counter immediately after initial setup
-                updateFlightCounter(tbody);
-
                 // 4. ATTACH THE EVENT LISTENER TO YOUR ADD BUTTON
                 const singleRowBtn = document.getElementById("addNewRowBtn");
                 if (singleRowBtn) {
                     singleRowBtn.addEventListener("click", () => {
                         buildAndAppendRow(tbody);
-                        // Automatically updates the visible number whenever the button adds a row
-                        updateFlightCounter(tbody); 
                     });
                 }
-            }); // DOMContentLoaded ends safely here
+            });
         })();
 
 
-         // 2. Define your variable
 
-    // 3. Select the element by its ID and insert the variable
-   
-    function generateFolderBatchFile() {
-        const rows = document.querySelectorAll('#flight-data-rows tr');
-        let addedFlights = new Set();
-        let flightFoldersCmd = "";
 
-        rows.forEach(row => {
-            const cells = row.getElementsByTagName('td');
+        function generateFolderBatchFile() {
+    const rows = document.querySelectorAll('#flight-data-rows tr');
+    let addedFlights = new Set();
+    let flightFoldersCmd = "";
+
+    rows.forEach(row => {
+        const cells = row.getElementsByTagName('td');
+        
+        // Target index 1, which is explicitly the 2nd column (Flight column)
+        if (cells && cells.length > 1) {
+            let flightNum = cells[1].textContent.trim().toUpperCase();
             
-            // Target index 1, which is explicitly the 2nd column (Flight column)
-            if (cells && cells.length > 1) {
-                let flightNum = cells[1].textContent.trim().toUpperCase();
+            if (flightNum !== "" && flightNum !== "FLIGHT") {
                 
-                if (flightNum !== "" && flightNum !== "FLIGHT") {
-                    
-                    // --- MAGIC CLEANING RULE ---
-                    // This removes "FZ" and strips any remaining blank spaces 
-                    if (flightNum.startsWith("FZ")) {
-                        flightNum = flightNum.replace("FZ", "").trim();
-                    }
+                // --- MAGIC CLEANING RULE ---
+                // This removes "FZ" and strips any remaining blank spaces 
+                if (flightNum.startsWith("FZ")) {
+                    flightNum = flightNum.replace("FZ", "").trim();
+                }
 
-                    // Check again to make sure it isn't empty after stripping "FZ"
-                    if (flightNum !== "" && !addedFlights.has(flightNum)) {
-                        addedFlights.add(flightNum);
-                        // Build individual folder commands
-                        flightFoldersCmd += `mkdir "${flightNum}" && `;
-                    }
+                // Check again to make sure it isn't empty after stripping "FZ"
+                if (flightNum !== "" && !addedFlights.has(flightNum)) {
+                    addedFlights.add(flightNum);
+                    // Build individual folder commands
+                    flightFoldersCmd += `mkdir "${flightNum}" && `;
                 }
             }
-        });
+        }
+    });
 
     if (addedFlights.size === 0) {
         alert("Please type your flight numbers into the Flight column first!");
         return;
     }
 
-        // Strip the trailing " && " from the last flight folder command
-        flightFoldersCmd = flightFoldersCmd.slice(0, -4);
+    // Strip the trailing " && " from the last flight folder command
+    flightFoldersCmd = flightFoldersCmd.slice(0, -4);
 
-        // 🎯 30SEP DATE FORMATTER
-        const today = new Date();
-        const dd = String(today.getDate()).padStart(2, '0'); // e.g., "30"
-        
-        // Short month name array lookup
-        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        const shortMonth = months[today.getMonth()]; // e.g., "SEP"
-        
-        const mainFolderName = `${dd}${shortMonth}`; // Combines into "30SEP"
+    // 🎯 30SEP DATE FORMATTER
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0'); // e.g., "30"
+    
+    // Short month name array lookup
+    const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    const shortMonth = months[today.getMonth()]; // e.g., "SEP"
+    
+    const mainFolderName = `${dd}${shortMonth}`; // Combines into "30SEP"
 
-        // 1. Create the 30SEP main folder.
-        // 2. Step inside it using "cd".
-        // 3. Create all flight folders inside it.
-        const commandString = `mkdir "${mainFolderName}" && cd "${mainFolderName}" && ${flightFoldersCmd}`;
+    // 1. Create the 30SEP main folder.
+    // 2. Step inside it using "cd".
+    // 3. Create all flight folders inside it.
+    const commandString = `mkdir "${mainFolderName}" && cd "${mainFolderName}" && ${flightFoldersCmd}`;
 
-        navigator.clipboard.writeText(commandString).then(() => {
-            alert(`I processed ${addedFlights.size} flights inside a folder named "${mainFolderName}"`);
-        }).catch(err => {
-            alert("Clipboard copy blocked. Please check your browser's clipboard permissions.");
-            console.error(err);
-        });
-    }
+    navigator.clipboard.writeText(commandString).then(() => {
+        alert(`I processed ${addedFlights.size} flights inside a folder named "${mainFolderName}"`);
+    }).catch(err => {
+        alert("Clipboard copy blocked. Please check your browser's clipboard permissions.");
+        console.error(err);
+    });
+}
+
+
+
+
 
 
         // 2. SAFETY FALLBACK FOR WEIGHT VARIANCE
@@ -627,6 +586,7 @@
             }
         });
 
+
         function setupTableActionDelegation() {
         const tbody = document.getElementById("flight-data-rows");
 
@@ -751,6 +711,9 @@
                 });
             });
         });
+
+
+
         document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.querySelector('.flight-table tbody');
         if (!tbody) return;
@@ -896,6 +859,12 @@
                 button.textContent = row.classList.contains('row-highlighted') ? '⭐' : '★';
             }
         }
+
+
+
+
+
+
      document.getElementById('excelScriptBtn').addEventListener('click', async function() {
     // 🎯 CONFIGURATION: Change this number to your exact column position (from left to right)
     const columnNumber = 2; 
@@ -931,6 +900,27 @@
     // 2. Format the text array cleanly into the exact structure Office Scripts expects
     const arrayString = uniqueFlights.map(f => `        "${f.replace(/"/g, '\\"')}"`).join(",\n");
 
+    // 3. Build the complete ready-to-run script payload text block
+    const fullScriptCode = `function main(workbook: ExcelScript.Workbook) {
+    // Automatically grabbed from your flight tracker app!
+    let targetSheetNames = [
+\n${arrayString}
+    ];
+
+    let templateSheet = workbook.getActiveWorksheet();
+    
+    targetSheetNames.forEach(name => {
+        let safeName = name.replace(/[\\\\\\/\\?\\*\\:\\[\\]]/g, "").substring(0, 31);
+        let existingSheet = workbook.getWorksheet(safeName);
+        if (!existingSheet) {
+            let newSheet = templateSheet.copy(ExcelScript.WorksheetPositionType.end);
+            newSheet.setName(safeName);
+        }
+    });
+    
+    console.log("Successfully created all flight sheets!");
+}`;
+
     // 4. Copy directly to clipboard without downloading any file
     try {
         await navigator.clipboard.writeText(fullScriptCode);
@@ -952,6 +942,8 @@
         alert("Failed to copy to clipboard automatically. Check your browser permissions.");
     }
 });
+
+
 
     </script>
 </body>
