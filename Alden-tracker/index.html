@@ -10,7 +10,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #1c2128; 
             color: #e6edf3; /* Soft white text */
-            padding: 40px 20px;
+            padding: 10px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,7 +24,7 @@
             overflow-x: auto;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 5px;
         }
 
         /* Main data grid structural styles - Refined dark elevation layer */
@@ -32,7 +32,7 @@
             width: 100%;
             border-collapse: collapse;
             background-color: #22272e; 
-            font-size: 13px;
+            font-size: 11px;
         }
 
         /* Precise reproduction of headers centered horizontally and vertically */
@@ -56,7 +56,7 @@
             border: 1px solid #373e47; 
             color: #e6edf3;
             text-align: center;
-            font-size: 18px; /* Data cells remain 18px */
+            font-size: 15px; /* Data cells remain 18px */
             vertical-align: middle;
         }
 
@@ -193,80 +193,277 @@
         }
 
 
-    </style>
+        /* Single Line Notes Wrapper */
+        .single-line-notes {
+            display: inline-flex;
+            align-items: center;
+            background-color: #22272e; /* Matches your table rows */
+            border: 1px solid #444c56;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-left: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            vertical-align: middle;
+            margin-top: 12px;
+        }
+
+        /* Inline Label Identifier */
+        .single-line-notes label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #58a6ff; /* Signature blue identifier header */
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        /* Flat Single Row Input Area */
+        .single-line-notes input[type="text"] {
+            background: none;
+            border: none;
+            color: #e6edf3;
+            font-family: inherit;
+            font-size: 13px;
+            width: 550px; /* Adjust width to fit your spacing layout */
+            padding: 4px 0;
+            text-transform: uppercase; /* Uniform uppercase tracking force */
+        }
+
+        /* Reset focus ring boundaries since container handled elevation */
+        .single-line-notes input[type="text"]:focus {
+            outline: none;
+        }
+
+        /* Dynamic glow effect specifically when user is actively typing */
+        .single-line-notes:focus-within {
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
+            background-color: #1c2128;
+        }
+
+        /* Styled Placeholder Text */
+        .single-line-notes input::placeholder {
+            color: #768390;
+            font-size: 11px;
+        }
+        .excelButton {
+            background-color: #107c41; 
+            color: white; margin-left: 
+            10px; margin-top: 10px; 
+            border: none; padding: 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-bottom: 15px;
+        }
+        .createFolder {
+            background-color: #55581f;
+            color: white; 
+            margin-left: 10px; 
+            margin-top: 10px; 
+            border: none; 
+            padding: 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-bottom: 15px;
+        }
+        .AddbuttonRow {
+            background-color: #565654; 
+            color: white; 
+            margin-top: 10px; 
+            border: none;  
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            padding: 7px;
+            margin-bottom:7px; 
+            margin-left: 8px;
+            float: left;
+        }
+        .totalFlights {
+            float:left;
+            margin-left: 10px;
+            margin-bottom:40px; 
+            color: white;
+        }
+</style>
 </head>
 <body>
-
-
-<tr draggable="true">
-    <!-- Keep your original flight columns exactly as they are here -->
-</tr>
-<tr draggable="true">
-    <!-- Keep your original flight columns exactly as they are here -->
-</tr>
-
-
+<!-- Put this button right above your flight tracker table layout -->
     <div class="table-container">
+    <button type="button" id="excelScriptBtn" class="excelButton">
+        Create Flight Checksheet
+    </button>
+    <button class="btn-action createFolder" onclick="generateFolderBatchFile()">Create Folder 📂</button>
+
+    <div class="single-line-notes">
+        <label for="operationalNotes">Flight Notes:</label>
+        <input type="text" id="operationalNotes" placeholder="ENTER NOTES HERE..." autocomplete="off">
+
+    </div>
         <table class="flight-table">
             <thead>
                 <tr draggable="true">
-                    <th style="width: 50px;"></th> <!-- Add this line here -->
+                    <th style="width: 10px;"></th> <!-- Add this line here -->
                     <th>Flight</th>
                     <th>A/C REG</th> <!-- Added A/C REG column beside Flight -->
                     <th>OFP</th>
                     <th>RTOW/RZFW</th>
                     <th>Crew Config</th>
                     <th>UWS Final</th>
+                    <th style="min-width: 20px; width: 30px;">Loadplan</th>
                     <th>UWS LMC</th>
                     <th>AZFW</th>
                     <th>ZFW Δ (Diff)</th>
                     <th>Final Fuel</th>
                     <th>LMC Detail</th>
                     <th>Remarks</th>
-                    <th style="min-width: 20px; width: 30px;">Loadplan</th>
                     <th style="min-width: 20px; width: 40px;">E-Filing Completed</th>
                 </tr>
             </thead>
             <tbody id="flight-data-rows">
                 <!-- Rows dynamically generated here by JavaScript -->
+
             </tbody>
         </table>
+        <button type="button" id="addNewRowBtn" class="AddbuttonRow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ADD ROW
+        </button>
+        <p class="totalFlights">Total Flights: <b id="totalFlights"></b> </p>
     </div>
-
         <script>
         // 1. Flight rows creation! RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
         (function() {
+            // 1. REUSABLE ROW TEMPLATE FUNCTION
+            function buildAndAppendRow(tbodyElement) {
+                const tr = document.createElement("tr");
+                tr.setAttribute('draggable', 'true');
+                tr.innerHTML = `
+                    <td><button class="btn-highlight" onclick="toggleRowHighlight(this)">★</button></td>
+                    <td contenteditable="true" data-field="flight-cell" class="prefix-cell flight-code-cell" id="flightHeader">FZ&nbsp; </td>
+                    <td contenteditable="true"></td> 
+                    <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleCellClass(this, 'loadplan-active')"></td>
+                    <td contenteditable="true"></td>
+                    <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
+                    <td class="numeric-center" data-field="diff">—</td>
+                    <td contenteditable="true" class="numeric-center" style="color:#ffd150; font-weight:bold;"></td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                    <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
+                `;
+                tbodyElement.appendChild(tr);
+            }
+
+            // Helper function to recount table rows live from the DOM
+            function updateFlightCounter(tbodyElement) {
+                const totalFlightsElement = document.getElementById("totalFlights");
+                if (totalFlightsElement) {
+                    // This physically counts how many 'tr' rows exist inside your tbody
+                    totalFlightsElement.textContent = tbodyElement.children.length;
+                }
+            }
+
+            // 2. INITIAL USER PROMPT SETUP
             let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
             let rowCount = parseInt(rowCountInput, 10);
             if (isNaN(rowCount) || rowCount <= 0) rowCount = 5;
 
-            // Wait for DOM to be ready to insert rows
+            // 3. WAIT FOR WINDOW ELEMENTS TO LOAD NATIVELY
             document.addEventListener("DOMContentLoaded", () => {
                 const tbody = document.getElementById("flight-data-rows");
+                
+                // Loop to generate initial row numbers matching user prompt input
                 for (let i = 0; i < rowCount; i++) {
-                    const tr = document.createElement("tr");
-                    // Inside your row loop, ensure your string template looks like this:
-                    tr.innerHTML = `
-                        <td><button class="btn-highlight" onclick="toggleRowHighlight(this)">★</button></td> <!-- Add this line here -->
-                        <td contenteditable="true" data-field="flight-cell" class="prefix-cell" id="flightHeader" >FZ&nbsp;</td>
-                        <td contenteditable="true"></td> 
-                        <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
-                        <td class="numeric-center" data-field="diff">—</td>
-                        <td contenteditable="true" class="numeric-center" style="color:#ffd150; font-weight:bold;"></td>
-                        <td contenteditable="true"></td>
-                        <td contenteditable="true"></td>
-                        <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleCellClass(this, 'loadplan-active')"></td>
-                        <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
-                    `;
-                    tbody.appendChild(tr);
+                    buildAndAppendRow(tbody);
                 }
-            });
+
+                // Run the counter immediately after initial setup
+                updateFlightCounter(tbody);
+
+                // 4. ATTACH THE EVENT LISTENER TO YOUR ADD BUTTON
+                const singleRowBtn = document.getElementById("addNewRowBtn");
+                if (singleRowBtn) {
+                    singleRowBtn.addEventListener("click", () => {
+                        buildAndAppendRow(tbody);
+                        // Automatically updates the visible number whenever the button adds a row
+                        updateFlightCounter(tbody); 
+                    });
+                }
+            }); // DOMContentLoaded ends safely here
         })();
+
+
+         // 2. Define your variable
+
+    // 3. Select the element by its ID and insert the variable
+   
+    function generateFolderBatchFile() {
+        const rows = document.querySelectorAll('#flight-data-rows tr');
+        let addedFlights = new Set();
+        let flightFoldersCmd = "";
+
+        rows.forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            
+            // Target index 1, which is explicitly the 2nd column (Flight column)
+            if (cells && cells.length > 1) {
+                let flightNum = cells[1].textContent.trim().toUpperCase();
+                
+                if (flightNum !== "" && flightNum !== "FLIGHT") {
+                    
+                    // --- MAGIC CLEANING RULE ---
+                    // This removes "FZ" and strips any remaining blank spaces 
+                    if (flightNum.startsWith("FZ")) {
+                        flightNum = flightNum.replace("FZ", "").trim();
+                    }
+
+                    // Check again to make sure it isn't empty after stripping "FZ"
+                    if (flightNum !== "" && !addedFlights.has(flightNum)) {
+                        addedFlights.add(flightNum);
+                        // Build individual folder commands
+                        flightFoldersCmd += `mkdir "${flightNum}" && `;
+                    }
+                }
+            }
+        });
+
+    if (addedFlights.size === 0) {
+        alert("Please type your flight numbers into the Flight column first!");
+        return;
+    }
+
+        // Strip the trailing " && " from the last flight folder command
+        flightFoldersCmd = flightFoldersCmd.slice(0, -4);
+
+        // 🎯 30SEP DATE FORMATTER
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0'); // e.g., "30"
+        
+        // Short month name array lookup
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const shortMonth = months[today.getMonth()]; // e.g., "SEP"
+        
+        const mainFolderName = `${dd}${shortMonth}`; // Combines into "30SEP"
+
+        // 1. Create the 30SEP main folder.
+        // 2. Step inside it using "cd".
+        // 3. Create all flight folders inside it.
+        const commandString = `mkdir "${mainFolderName}" && cd "${mainFolderName}" && ${flightFoldersCmd}`;
+
+        navigator.clipboard.writeText(commandString).then(() => {
+            alert(`I processed ${addedFlights.size} flights inside a folder named "${mainFolderName}"`);
+        }).catch(err => {
+            alert("Clipboard copy blocked. Please check your browser's clipboard permissions.");
+            console.error(err);
+        });
+    }
+
 
         // 2. SAFETY FALLBACK FOR WEIGHT VARIANCE
         if (typeof processWeightVariance !== 'function') {
@@ -430,7 +627,6 @@
             }
         });
 
-
         function setupTableActionDelegation() {
         const tbody = document.getElementById("flight-data-rows");
 
@@ -555,9 +751,6 @@
                 });
             });
         });
-
-
-
         document.addEventListener('DOMContentLoaded', () => {
         const tbody = document.querySelector('.flight-table tbody');
         if (!tbody) return;
@@ -703,6 +896,62 @@
                 button.textContent = row.classList.contains('row-highlighted') ? '⭐' : '★';
             }
         }
+     document.getElementById('excelScriptBtn').addEventListener('click', async function() {
+    // 🎯 CONFIGURATION: Change this number to your exact column position (from left to right)
+    const columnNumber = 2; 
+
+    // 1. Target every single cell in that exact column across the whole table
+    const targetCells = document.querySelectorAll(`table tr td:nth-child(${columnNumber}), table tr th:nth-child(${columnNumber})`);
+    
+    const uniqueFlights = [];
+    let skippedHeader = false;
+
+    targetCells.forEach(cell => {
+        const cellText = cell.innerText.trim();
+        
+        if (cellText) {
+            // 🛑 SKIP THE FIRST CELL (The Column Header Name)
+            if (!skippedHeader) {
+                skippedHeader = true; 
+                return; 
+            }
+
+            // Filter out duplicate values so sheet names stay unique
+            if (!uniqueFlights.includes(cellText)) {
+                uniqueFlights.push(cellText);
+            }
+        }
+    });
+
+    if (uniqueFlights.length === 0) {
+        alert("No flight data rows found at column position " + columnNumber + " after skipping the header.");
+        return;
+    }
+
+    // 2. Format the text array cleanly into the exact structure Office Scripts expects
+    const arrayString = uniqueFlights.map(f => `        "${f.replace(/"/g, '\\"')}"`).join(",\n");
+
+    // 4. Copy directly to clipboard without downloading any file
+    try {
+        await navigator.clipboard.writeText(fullScriptCode);
+        
+        // Visual confirmation: Change button appearance temporarily to confirm copy
+        const btn = document.getElementById('excelScriptBtn');
+        const originalText = btn.innerText;
+        const originalBg = btn.style.backgroundColor;
+        
+        btn.innerText = "✓ Code Copied!";
+        btn.style.backgroundColor = "#219653";
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = originalBg;
+        }, 2000);
+        
+    } catch (err) {
+        alert("Failed to copy to clipboard automatically. Check your browser permissions.");
+    }
+});
 
     </script>
 </body>
