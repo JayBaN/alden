@@ -249,92 +249,145 @@
 }
    
     @media print {
-        /* 1. Reset the entire layout so it flows naturally onto multiple pages */
-        html, body {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            height: auto !important;
-            overflow: visible !important;
-            display: block !important; /* Disables flex centering for print */
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-        /* 2. Release the table from the horizontal scroll container */
-        .table-container {
-            width: 100% !important;
-            max-width: 100% !important;
-            overflow: visible !important;
-            box-shadow: none !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-            display: block !important;
-        }
-
-        /* 3. Scale and clean the table structure */
-        .flight-table {
-            width: 100% !important;
-            background-color: #ffffff !important;
-            display: table !important;
-        }
-
-        /* 4. RESTORED & OPTIMIZED THE TH ROW FOR PRINTING */
-        thead {
-            display: table-header-group !important; /* Forces headers to repeat on every new page */
-        }
-        
-        .flight-table th {
-            display: table-cell !important;
-            background-color: #f0f4f8 !important; /* Professional light gray/blue background for paper */
-            color: #004085 !important; /* Sharp dark blue for readability */
-            border: 1px solid #444c56 !important;
-            font-size: 11px !important;
-            font-weight: bold !important;
-        }
-
-        /* 5. Style the data cells for high-contrast white paper printing */
-        .flight-table td {
-            background-color: #ffffff !important;
-            color: #000000 !important;
-            border: 1px solid #666666 !important; /* Clean gray borders for legibility */
-            font-size: 12px !important; 
-        }
-
-        /* 6. Prevent table rows from getting chopped in half across pages */
-        .flight-table tbody tr {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-            background-color: #ffffff !important;
-        }
-
-        /* 7. Hide buttons and interactive features from the printout */
-        .btn-highlight, button, .no-print {
-            display: none !important;
-        }
-
-        /* 8. Handle checked status boxes gracefully on white paper */
-        .loadplan-active {
-            background-color: #e2ebd5 !important; /* Light pastel green tint */
-            color: #000000 !important;
-        }
-
-        .efiling-active {
-            background-color: #d1ebd9 !important; /* Light pastel emerald tint */
-            color: #000000 !important;
-        }
-
-        .flight-cell-complete {
-            opacity: 0.6 !important;
-            text-decoration: line-through !important;
-            background-color: #f0f0f0 !important;
-            color: #555555 !important;
-        }
-        /* 👇 ADD THIS PIECE HERE TO HIDE THE FIRST COLUMN ONLY ON PAPER 👇 */
-        .flight-table th:first-child, 
-        .flight-table td:first-child {
-            display: none !important;
-        }
+    /* 1. Reset the entire layout so it flows naturally onto multiple pages */
+    html, body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important; /* Disables flex centering for print */
+        padding: 0 !important;
+        margin: 0 !important;
     }
+
+    /* 2. Release the table from the horizontal scroll container */
+    .table-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+    }
+
+    /* 3. Scale and clean the table structure */
+    .flight-table {
+        width: 100% !important;
+        background-color: #ffffff !important;
+        display: table !important;
+    }
+
+    /* 4. RESTORED & OPTIMIZED THE TH ROW FOR PRINTING */
+    thead {
+        display: table-header-group !important; /* Forces headers to repeat on every new page */
+    }
+    
+    .flight-table th {
+        display: table-cell !important;
+        background-color: #f0f4f8 !important; /* Professional light gray/blue background for paper */
+        color: #004085 !important; /* Sharp dark blue for readability */
+        border: 1px solid #444c56 !important;
+        font-size: 11px !important;
+        font-weight: bold !important;
+    }
+
+    /* 5. Style the data cells for high-contrast white paper printing */
+    .flight-table td {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #666666 !important; /* Clean gray borders for legibility */
+        font-size: 12px !important; 
+    }
+
+    /* 6. Prevent table rows from getting chopped in half across pages */
+    .flight-table tbody tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        background-color: #ffffff !important;
+    }
+
+    /* =========================================================
+       7. HIDE SEARCH BAR, BUTTONS, AND INTERACTIVE FEATURES
+       ========================================================= */
+    /* added .search-container here to remove the top elements from paper prints */
+    .search-container, 
+    .dashboard-header,
+    .btn-highlight, 
+    button, 
+    .no-print {
+        display: none !important;
+    }
+
+    /* 8. Handle checked status boxes gracefully on white paper */
+    .loadplan-active {
+        background-color: #e2ebd5 !important; /* Light pastel green tint */
+        color: #000000 !important;
+    }
+
+    .efiling-active {
+        background-color: #d1ebd9 !important; /* Light pastel emerald tint */
+        color: #000000 !important;
+    }
+
+    .flight-cell-complete {
+        opacity: 0.6 !important;
+        text-decoration: line-through !important;
+        background-color: #f0f0f0 !important;
+        color: #555555 !important;
+    }
+
+    /* HIDE THE FIRST COLUMN ONLY ON PAPER (Star/Drag Handle Column) */
+    .flight-table th:first-child, 
+    .flight-table td:first-child {
+        display: none !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+.search-container {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.global-search-bar {
+    flex-grow: 1;
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.global-search-bar:focus {
+    border-color: #38bdf8;
+}
+
+.search-mode-select {
+    background-color: #0f172a;
+    border: 1px solid #38bdf8;
+    color: #e3e3e3;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+}
 
 </style>
 </head>
@@ -345,6 +398,14 @@
 <tr draggable="true">
     <!-- Keep your original flight columns exactly as they are here -->
 </tr>
+
+<div class="search-container">
+    <select id="search-column-mode" class="search-mode-select">
+        <option value="flight-only">Search by: Flight Name</option>
+        <option value="all-columns">Search by: All Columns</option>
+    </select>
+    <input type="text" id="dashboard-search-field" class="global-search-bar" placeholder="🔍 Enter filter keyword...">
+</div>
 <!-- Put this button right above your flight tracker table layout -->
     <div class="table-container" id="myTable">
     <button onclick="window.print()" style="background-color: #5b6064; color: white; margin-left: 10px; margin-top: 10px; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 15px;">Print Table
@@ -1032,6 +1093,71 @@
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ==========================================
+// HIGH-PERFORMANCE CONTENTEDITABLE SEARCH ENGINE
+// ==========================================
+function executeFilteredSearch() {
+    // 1. Get the lowercase text typed into your search bar
+    const query = document.getElementById("dashboard-search-field").value.toLowerCase().trim();
+    const searchMode = document.getElementById("search-column-mode").value;
+
+    // 2. Loop through every row inside your specific #flight-data-rows container
+    document.querySelectorAll("#flight-data-rows tr").forEach(row => {
+        let isMatch = false;
+
+        // Target your specific Flight code cell inside column position 2
+        const flightCell = row.querySelector(".flight-code-cell");
+        const flightValue = flightCell ? flightCell.textContent.toLowerCase() : "";
+
+        if (searchMode === "flight-only") {
+            // Strict Mode: Only evaluate characters inside the Flight Name block
+            if (flightValue.includes(query)) {
+                isMatch = true;
+            }
+        } else {
+            // Global Mode: Scan text across all contenteditable cells inside this row
+            if (row.textContent.toLowerCase().includes(query)) {
+                isMatch = true;
+            }
+        }
+
+        // 3. Toggle row display visibility state instantly
+        if (query === "" || isMatch) {
+            row.style.display = ""; // Renders the row normally
+        } else {
+            row.style.display = "none"; // Hides the row from view
+        }
+    });
+}
+
+// Bind the new robust text execution handlers straight to your search fields
+document.getElementById("dashboard-search-field").addEventListener("input", executeFilteredSearch);
+document.getElementById("search-column-mode").addEventListener("change", executeFilteredSearch);
 
 
     </script>
