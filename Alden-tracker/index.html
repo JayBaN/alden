@@ -463,6 +463,7 @@
                     <th>AZFW</th>
                     <th>ZFW Δ (Diff)</th>
                     <th>Final Fuel</th>
+                    <th style="border-bottom:2px solid yellow;">LoadSheet</th>
                     <th>LMC Detail</th>
                     <th>Remarks</th>
                     <th style="min-width: 20px; width: 40px;">E-Filing Completed</th>
@@ -485,54 +486,58 @@
         // const sampleFlights = ["FZ991", "FZ144", "FZ337", "FZ1133", "FZ974", "FZ966", "FZ978", "FZ1716", "FZ391"];
 
         (function() {
-            // 1. REUSABLE ROW TEMPLATE FUNCTION
-            function buildAndAppendRow(tbodyElement) {
-                const tr = document.createElement("tr");
-                tr.setAttribute('draggable', 'true');
-                tr.innerHTML = `
-                    <td><button class="btn-highlight" onclick="toggleRowHighlight(this)">★</button></td>
-                    <td contenteditable="true" data-field="flight-cell" class="prefix-cell flight-code-cell" id="flightHeader">FZ&nbsp; </td>
-                    <td contenteditable="true"></td> 
-                    <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleCellClass(this, 'loadplan-active')"></td>
-                    <td contenteditable="true"></td>
-                    <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
-                    <td class="numeric-center" data-field="diff">—</td>
-                    <td contenteditable="true" class="numeric-center" style="color:#ffd150; font-weight:bold;"></td>
-                    <td contenteditable="true"></td>
-                    <td contenteditable="true"></td>
-                    <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
-                `;
-                tbodyElement.appendChild(tr);
-            }
-            // <button onclick="generateAndOpenLink(this)" style="margin-left:13px; margin-bottom:15px;">📂</button>
+    // 1. REUSABLE ROW TEMPLATE FUNCTION
+    function buildAndAppendRow(tbodyElement) {
+        const tr = document.createElement("tr");
+        tr.setAttribute('draggable', 'true');
+        tr.innerHTML = `
+            <td><button class="btn-highlight" onclick="toggleRowHighlight(this)">★</button></td>
+            <td contenteditable="true" data-field="flight-cell" class="prefix-cell flight-code-cell">FZ </td>
+            <td contenteditable="true"></td> 
+            <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleCellClass(this, 'loadplan-active')"></td>
+            <td contenteditable="true"></td>
+            <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
+            <td class="numeric-center" data-field="diff">—</td>
+            <td contenteditable="true" class="numeric-center" style="color:#ffd150; font-weight:bold;"></td>
+            <!-- 🎯 FIXED POSITION: The checkbox now sits exactly here to line up under LOADSHEET -->
+            <td class="loadsheet-cell"><input type="checkbox" class="task-checkbox" onchange="toggleLoadsheetClass(this, 'loadsheet-active')"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
+        `;
+        tbodyElement.appendChild(tr);
+    }
 
-            // 2. INITIAL USER PROMPT SETUP
-            let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
-            let rowCount = parseInt(rowCountInput, 10);
-            if (isNaN(rowCount) || rowCount <= 0) rowCount = 5;
+    // 2. INITIAL USER PROMPT SETUP
+    let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
+    let rowCount = parseInt(rowCountInput, 10);
+    if (isNaN(rowCount) || rowCount <= 0) rowCount = 5;
 
-            // 3. WAIT FOR WINDOW ELEMENTS TO LOAD NATIVELY
-            document.addEventListener("DOMContentLoaded", () => {
-                const tbody = document.getElementById("flight-data-rows");
-                
-                // Loop to generate initial row numbers matching user prompt input
-                for (let i = 0; i < rowCount; i++) {
-                    buildAndAppendRow(tbody);
-                }
+    // 3. WAIT FOR WINDOW ELEMENTS TO LOAD NATIVELY
+    document.addEventListener("DOMContentLoaded", () => {
+        const tbody = document.getElementById("flight-data-rows");
+        
+        // Loop to generate initial row numbers matching user prompt input
+        for (let i = 0; i < rowCount; i++) {
+            buildAndAppendRow(tbody);
+        }
 
-                // 4. ATTACH THE EVENT LISTENER TO YOUR ADD BUTTON
-                const singleRowBtn = document.getElementById("addNewRowBtn");
-                if (singleRowBtn) {
-                    singleRowBtn.addEventListener("click", () => {
-                        buildAndAppendRow(tbody);
-                    });
-                }
+        // 4. ATTACH THE EVENT LISTENER TO YOUR ADD BUTTON
+        const singleRowBtn = document.getElementById("addNewRowBtn");
+        if (singleRowBtn) {
+            singleRowBtn.addEventListener("click", () => {
+                buildAndAppendRow(tbody);
             });
-        })();
+        }
+    });
+})();
+
+
+
 
 
 
@@ -950,15 +955,24 @@
     });
 
 
-        // Safe status color backdrop toggler
-        function toggleCellClass(checkbox, className) {
-            const td = checkbox.parentNode;
-            if (checkbox.checked) {
-                td.classList.add(className);
-            } else {
-                td.classList.remove(className);
-            }
-        }
+        function toggleCellClass(checkboxElement, className) {
+    // 1. Keep your existing class-toggling logic intact
+    const cell = checkboxElement.parentNode;
+    if (checkboxElement.checked) {
+        cell.classList.add(className);
+        
+        // 🎯 Lock in the precise individual timestamp the millisecond they click it
+        const timeNow = new Date();
+        const timeString = timeNow.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        checkboxElement.setAttribute('data-timestamp', timeString);
+    } else {
+        cell.classList.remove(className);
+        
+        // 🗑️ Clear it instantly if they uncheck it
+        checkboxElement.removeAttribute('data-timestamp');
+    }
+}
+
 
 
         // Node-Safe Drag Engine (Preserves checked elements and written cell data)
@@ -1037,63 +1051,146 @@
 
 
 
+     
 
+    document.getElementById('excelScriptBtn').addEventListener('click', async function() {
+    // 🎯 CONFIGURATION: Explicitly mapped to match your web table columns
+    const flightColumnNumber = 2;   // Column with "FZ 1"
+    const regColumnNumber = 3;      // Column with "A6-FEC"
+    const loadplanColumnNumber = 8; // Column containing the loadplan checkbox
+    const loadsheetColumnNumber = 13; // 🆕 ADDED: Column containing your new loadsheet checkbox
 
-     document.getElementById('excelScriptBtn').addEventListener('click', async function() {
-    // 🎯 CONFIGURATION: Change this number to your exact column position (from left to right)
-    const columnNumber = 2; 
-
-    // 1. Target every single cell in that exact column across the whole table
-    const targetCells = document.querySelectorAll(`table tr td:nth-child(${columnNumber}), table tr th:nth-child(${columnNumber})`);
+    // Target the table rows inside the tbody specifically to avoid miscounting header structure
+    const tableRows = document.querySelectorAll("table tbody tr");
     
-    const uniqueFlights = [];
-    let skippedHeader = false;
+    // If your table doesn't have a tbody, fallback to all rows
+    const rowsToProcess = tableRows.length > 0 ? tableRows : document.querySelectorAll("table tr");
+    
+    const uniqueFlightsMap = [];
+    const seenFlights = new Set();
 
-    targetCells.forEach(cell => {
-        const cellText = cell.innerText.trim();
+    rowsToProcess.forEach(row => {
+        const flightCell = row.querySelector(`td:nth-child(${flightColumnNumber})`);
+        const regCell = row.querySelector(`td:nth-child(${regColumnNumber})`);
+        const loadplanCell = row.querySelector(`td:nth-child(${loadplanColumnNumber})`);
+        const loadsheetCell = row.querySelector(`td:nth-child(${loadsheetColumnNumber})`); // 🆕 ADDED
         
-        if (cellText) {
-            // 🛑 SKIP THE FIRST CELL (The Column Header Name)
-            if (!skippedHeader) {
-                skippedHeader = true; 
-                return; 
+        if (flightCell) {
+            // Helper function to handle BOTH contenteditable text cells AND input elements seamlessly
+            const getCleanValue = (cell) => {
+                if (!cell) return "";
+                const inputElement = cell.querySelector("input[type='text'], input:not([type]), select");
+                const rawText = inputElement ? inputElement.value : cell.textContent;
+                return rawText.trim().toUpperCase();
+            };
+
+            const flightText = getCleanValue(flightCell);
+            let regText = getCleanValue(regCell);
+            
+            // 🎯 LOADPLAN INDIVIDUAL TIMING ENGINE (G25)
+            let loadplanTime = "";
+            if (loadplanCell) {
+                const checkbox = loadplanCell.querySelector("input[type='checkbox']");
+                if (checkbox && checkbox.checked) {
+                    if (checkbox.getAttribute('data-timestamp')) {
+                        loadplanTime = checkbox.getAttribute('data-timestamp');
+                    } else {
+                        const timeNow = new Date();
+                        loadplanTime = timeNow.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                        checkbox.setAttribute('data-timestamp', loadplanTime);
+                    }
+                } else if (checkbox) {
+                    checkbox.removeAttribute('data-timestamp');
+                }
             }
 
-            // Filter out duplicate values so sheet names stay unique
-            if (!uniqueFlights.includes(cellText)) {
-                uniqueFlights.push(cellText);
+            // 🎯 LOADSHEET INDIVIDUAL TIMING ENGINE (G28) - 🆕 ADDED
+            let loadsheetTime = "";
+            if (loadsheetCell) {
+                const checkbox = loadsheetCell.querySelector("input[type='checkbox']");
+                if (checkbox && checkbox.checked) {
+                    if (checkbox.getAttribute('data-loadsheet-timestamp')) {
+                        loadsheetTime = checkbox.getAttribute('data-loadsheet-timestamp');
+                    } else {
+                        const timeNow = new Date();
+                        loadsheetTime = timeNow.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                        checkbox.setAttribute('data-loadsheet-timestamp', loadsheetTime);
+                    }
+                } else if (checkbox) {
+                    checkbox.removeAttribute('data-loadsheet-timestamp');
+                }
+            }
+            
+            // 🛑 STRICT FILTER: Skip empty rows, header rows, or rows that only contain the baseline placeholder "FZ"
+            if (flightText && flightText !== "FZ" && flightText !== "FLIGHT" && flightText !== "FZ ") {
+                
+                if (!regText) {
+                    regText = ""; 
+                }
+
+                // Filter out duplicate flight names so Excel tab generation doesn't crash
+                if (!seenFlights.has(flightText)) {
+                    seenFlights.add(flightText);
+                    uniqueFlightsMap.push({
+                        flight: flightText,
+                        reg: regText,
+                        lpTimestamp: loadplanTime, // 📦 Packaged Loadplan
+                        lsTimestamp: loadsheetTime  // 📦 Packaged Loadsheet
+                    });
+                }
             }
         }
     });
 
-    if (uniqueFlights.length === 0) {
-        alert("No flight data rows found at column position " + columnNumber + " after skipping the header.");
+    if (uniqueFlightsMap.length === 0) {
+        alert("No valid flight records found. Ensure rows contain more than just the baseline 'FZ' placeholder text.");
         return;
     }
 
-    // 2. Format the text array cleanly into the exact structure Office Scripts expects
-    const arrayString = uniqueFlights.map(f => `        "${f.replace(/"/g, '\\"')}"`).join(",\n");
+    // 2. Format the payload into an array of objects that Office Scripts can digest
+    const arrayString = uniqueFlightsMap.map(item => {
+        const cleanFlight = item.flight.replace(/"/g, '\\"');
+        const cleanReg = item.reg.replace(/"/g, '\\"');
+        return `        { flight: "${cleanFlight}", reg: "${cleanReg}", lpTime: "${item.lpTimestamp}", lsTime: "${item.lsTimestamp}" }`;
+    }).join(",\n");
 
     // 3. Build the complete ready-to-run script payload text block
     const fullScriptCode = `function main(workbook: ExcelScript.Workbook) {
-    // Automatically grabbed from your flight tracker app!
-    let targetSheetNames = [
-\n${arrayString}
-    ];
+        // Automatically grabbed from your flight tracker app!
+        let flightData = [
+    \n${arrayString}
+        ];
 
-    let templateSheet = workbook.getActiveWorksheet();
-    
-    targetSheetNames.forEach(name => {
-        let safeName = name.replace(/[\\\\\\/\\?\\*\\:\\[\\]]/g, "").substring(0, 31);
-        let existingSheet = workbook.getWorksheet(safeName);
-        if (!existingSheet) {
-            let newSheet = templateSheet.copy(ExcelScript.WorksheetPositionType.end);
-            newSheet.setName(safeName);
-        }
-    });
-    
-    console.log("Successfully created all flight sheets!");
-}`;
+        let templateSheet = workbook.getActiveWorksheet();
+        
+        flightData.forEach(data => {
+            let safeName = data.flight.replace(/[\\\\\\/\\?\\*\\:\\[\\]]/g, "").substring(0, 31);
+            let targetSheet = workbook.getWorksheet(safeName);
+            
+            if (!targetSheet) {
+                targetSheet = templateSheet.copy(ExcelScript.WorksheetPositionType.end);
+                targetSheet.setName(safeName);
+            }
+            
+            targetSheet.getRange("C3").setValue(safeName);
+            
+            targetSheet.getRange("C4").setValue(data.reg);
+            
+            if (data.lpTime) {
+                targetSheet.getRange("G25").setValue(data.lpTime);
+            } else {
+                targetSheet.getRange("G25").setValue("");
+            }
+
+            if (data.lsTime) {
+                targetSheet.getRange("G28").setValue(data.lsTime);
+            } else {
+                targetSheet.getRange("G28").setValue("");
+            }
+        });
+        
+        console.log("Successfully updated all flight sheets with individual completion timestamps!");
+    }`;
 
     // 4. Copy directly to clipboard without downloading any file
     try {
@@ -1116,6 +1213,14 @@
         alert("Failed to copy to clipboard automatically. Check your browser permissions.");
     }
 });
+
+
+
+
+
+
+
+
 
 // ==========================================
 // HIGH-PERFORMANCE CONTENTEDITABLE SEARCH ENGINE
