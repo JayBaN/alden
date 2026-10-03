@@ -707,7 +707,7 @@ textarea.addEventListener('input', function () {
         const commandString = flightFoldersCmd;
 
         navigator.clipboard.writeText(commandString).then(() => {
-            alert(`Batch script generated! Processed ${addedFlights.size} flight folders directly to clipboard. New folders will be added; existing folders will be safely skipped.`);
+            alert(`Processed ${addedFlights.size} flight folders directly to clipboard. New folders will be added; existing folders will be safely skipped.`);
         }).catch(err => {
             alert("Clipboard copy blocked. Please check your browser's clipboard permissions.");
             console.error(err);
