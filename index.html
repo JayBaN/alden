@@ -1,262 +1,1460 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>
-    Alden.LCA
-  </title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<style type="text/css">
-  strong {
-    color: yellow;
-  }
-</style>
-<body style="background-color: black; color:white;">
-      <input type="hidden" id="myInput" value="rampteam@flydubai.com
-opssupport@dnata.com">
-      <input type="hidden" id="myInput2" value="DepartureControl@emirates.com
-        DepartureControlFZT3@emirates.com
-        EK-DepartureControl@emirates.com">
-      <input type="hidden" id="myInput3" value="Loadcontrol@2025">    
-      <input type="hidden" id="myInput4" value="Flydubai@2021">   
-      <input type="hidden" id="myInput5" value="T2FMU@dnata.com">
-      <input type="hidden" id="myInput6" value="Jaybanistheboss!">
-      <input type="hidden" id="myInput7" value="Jayban1723!!!!">  
-    
-<p class="h2" style="margin-left: 30px;color:#79ffc9;">Alden LCA</p><hr color="white">
-<ul class="list-unstyled" style="margin-left: 30px;">
-          <div style="float:left;">
-            <li><b>FZ RAMP TEAM (Email)</b>
-            <ul>
-              <li>rampteam@flydubai.com</li>
-              <li>opssupport@dnata.com</li>
-              <button onclick="copyText()">Copy</button>
-            </ul>
-          </li>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alden Flight Tracker</title>
+    <style>
+        /* Base page styling - Shifted to a slightly lighter professional dark charcoal */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1c2128; 
+            color: #e6edf3; /* Soft white text */
+            padding: 10px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-transform: uppercase;
+        }
 
-          <li><b>FMU T2(Email)</b>
-            <ul>
-              <li>T2FMU@dnata.com</li>
-              <button onclick="copyText5()">Copy</button>
-            </ul>
-          </li>
+        /* Container to handle overflow scrolling safely */
+        .table-container {
+            width: 100%;
+            max-width: 1800px; /* Account for all columns uniformly */
+            overflow-x: auto;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+            border-radius: 8px;
+            margin-top: 5px;
+        }
 
-          <li><b>Departure Control T3 (Email)</b>
-            <ul>
-              <li>DepartureControl@emirates.com</li>
-              <button onclick="copyText2()">Copy</button>
-            </ul>
-          </li>
+        /* Main data grid structural styles - Refined dark elevation layer */
+        .flight-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #22272e; 
+            font-size: 11px;
+        }
 
-          <li><b>Printer</b>
-            <ul>
-              <li>\\DOWIINPV058\DXBARM_DLCC_LZ04</li>
-              <li>\\DOWIINPV058\DXBARM_DLCC_LZ03</li>
-              <li>\\DOWIINPV058\DXBARM_DLCCADMIN_LC01</li>
-            </ul>
-          </li>
-          <li><b>EFOS</b>
-            <ul>
-              <li>handlingdxb1</li>
-              <li>Loadcontrol@2025 <button onclick="copyText3()">Copy</button></li>
+        /* Precise reproduction of headers centered horizontally and vertically */
+        .flight-table th {
+            background-color: #181c22;
+            color: #58a6ff; /* Professional blue identifier accent */
+            font-weight: 600;
+            padding: 14px 10px;
+            border: 1px solid #444c56;
+            font-size: 11px; /* Headers remain 11px */
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+        }
 
-            </ul>
-          </li>
-          <li><b>Skybook</b>
-            <ul>
-              <li>Loadsheet</li>
-              <li>Flydubai@2021 <button onclick="copyText4()">Copy</button></li>
+       /* All table data cells aligned strictly in the center */
+        .flight-table td {
+            padding: 10px;
+            border: 1px solid #373e47; 
+            color: #e6edf3;
+            text-align: center;
+            font-size: 15px; /* Data cells remain 18px */
+            vertical-align: middle;
+        }
 
-            </ul>
-          </li>
-          <li><b>FZ Fuel Dashboard</b>
-            <ul>
-              <li>Fz.clc</li>
-              <li>Flydubai@2026</li>
+        /* --- Drag and Drop Visual Feedback Styles --- */
+        .flight-table tbody tr {
+            cursor: grab;
+            transition: background-color 0.15s ease;
+        }
 
-            </ul>
-          </li>
-          <li><b>Personal</b>
-            <ul>
-              <li><button id="myButton" onclick="copyText6()">Copy</button></li>
-              <li><button id="myButton" onclick="copyText7()">FZ</button></li>
-            </ul>
-          </li>
-          <li><b>CLC Contact</b>
-            <ul>
-              <li>+97142044139</li>
-              <li>Admin - +97142182142</li>
+        .flight-table tbody tr:active {
+            cursor: grabbing;
+        }
 
-            </ul>
-          </li>
-          <li><b>Contact</b>
-            <ul>
-              <li><b>UWS:</b> 6064 632</li>
-              <li><b>COU:</b> 601 5334</li>
-              <li><b>Departure Control T3:</b> 504 6159/6161</li>
-              <li><b>FZ Cargo (Loading Priority)</b> 6033730 / 6033515</li>
-              <li><b>FMU T2</b> 505 6034</li>
-              <li><b>T2 OFFICE</b> 518 1675</li>
-              <li><b>T3 OFFICE:</b> 505 8689</li>
-              <li><b>COMAIL FMU:</b> 504 7726</li>
-            </ul>
-          </li>
-          </div>
+        /* Styling for the row currently being dragged */
+        .flight-table tbody tr.dragging {
+            opacity: 0.4;
+            background-color: #2d333b;
+        }
 
-          <li style="float:center;margin-left: 400px;"><b>NOTES:</b>
-            <ul>
-              <li><b>VAL BOX:</b> <strong>XYM</strong> - 9KG / <strong>XYP</strong> - 5KG</li>
-              <li><b>CBBG LS:</b> 
-                <ul>
-                  <li>C0/IST/SOC/1/40 </li>
-                  <li>C0/IST/PETC ( for falcon or SVAN in cabin)/1/40 </li>
-                </ul>
-              </li>
-              <li><b>WCLB</b> 
-                <ul>
-                  <li><strong>01PC</strong> LITHIUM ION BATTERY <strong>240WH</strong> PAX CARRYING ONBOARD SEAT <strong>10F</strong>
-                    WCHR LOADED IN HOLD TAG NO <strong>EK343370</strong>
-                  </li> 
-                </ul>
-              </li>
-              <li><b>WCDB</b> 
-                <ul>
-                  <li><strong>01</strong> WHEELCHAIR BATTERY DRY SEQ: <strong>159</strong> WT: <strong>1/45KG</strong> TN:<strong>FZ726675</strong> //
-                    BATTERY WT : <strong>1/13KG</strong> <strong>TN/FZ727233</strong>
-                  </li> 
-                </ul>
-              </li>
-              <li><b>FIREARMS</b> 
-                <ul>
-                  <li>FIREARM CHECKED IN UNDER T/N <strong>FZ523502</strong> LOADED IN <strong>C4</strong> </li> 
-                  <li><strong>WEA-LASER PISTOL</strong> NO AMMUNITION <strong>1PC</strong> / <strong>14KG</strong> TAG NO-<strong>FZ767714</strong> SEQ <strong>85</strong> SEAT <strong>9F</strong></li> 
-                </ul>
-              </li>
-              <li><b>Falcon Handling</b> 
-                <ul>
-                  <li>A notional weight of 3 kg will be used for each falcon or baby falcon.
-                      A notional weight of 7 kg will be used for each box.
+        /* Visual indicator when hovering over a valid drop target */
+        .flight-table tbody tr.drag-over {
+            background-color: #26384f;
+            outline: 2px dashed #58a6ff;
+        }
 
-                      A NOTOC is required for falcons in the cabin with remarks
-                  </li> 
-                </ul>
-              </li>
-              <li><b>DOH AND BUD SECTORS LIRF</b> 
-                <ul>
-                  <li>DG shipment on flight is under "focus" ensure same handled and secured or stowed in a proper manner without damage.
-                  </li> 
-                </ul>
-              </li>
 
-              <li><b>LITHIUM BATTERY DETAILS ON BOARD WITH PAX</b> 
-                <ul>
-                  <li> W/H : </li> 
-                  <li> SEQ : </li> 
-                  <li> Seat Number : </li> 
-                  <li> Tag : </li> 
-                  <li> Battery Wt : </li> 
-                </ul>
-              </li>
 
-              <li><b>Weapon Details</b> 
-                <ul>
-                  <li> Number of Pieces : </li> 
-                  <li> Weapon Type: </li> 
-                  <li> Ammunication if any kindly mention weight : </li> 
-                  <li> Tag number: </li> 
-                  <li> Commodity: </li> 
-                </ul>
-              </li>
-            </ul>
-          </li>
 
-           
-</ul> 
-</html>
+        /* Monospace font for numerical columns keeping center alignment */
+        .flight-table .numeric-center {
+            text-align: center;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace;
+        }
 
-<script type="">
- // CTRL function
- document.addEventListener('keydown', function(event) {
-    if ((event.altKey || event.metaKey) && event.key === 'q') {
-      document.getElementById('myButton').click(); // Programmatically click the button
-      event.preventDefault(); // Prevent default browser behavior for the shortcut
+        /* Highlights cells intended for raw physical manual data entry fields */
+        .flight-table td[contenteditable="true"] {
+            cursor: text;
+            transition: background-color 0.15s ease;
+        }
+
+        .flight-table td[contenteditable="true"]:hover {
+            background-color: #2d333b;
+        }
+
+        .flight-table td[contenteditable="true"]:focus {
+            background-color: #2d3946;
+            outline: none;
+            box-shadow: inset 0 0 0 2px #58a6ff;
+            color: #ffffff;
+        }
+
+        /* Checkbox styling adjustments */
+        .task-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #58a6ff;
+        }
+
+        /* Interactive status cell tracking transitions */
+        .loadplan-cell, .efiling-cell {
+            transition: background-color 0.2s ease;
+        }
+
+        /* Professional colored background once checkboxes are selected */
+        .loadplan-active {
+            background-color: #7a8749 !important; /* Slightly elevated professional deep steel blue */
+        }
+
+        .efiling-active {
+            background-color: #143d22 !important; /* Slightly elevated professional dark forest emerald */
+        }
+
+        /* Target strike out style specifically for the single flight code cell field */
+        .flight-cell-complete {
+            opacity: 0.45;
+            text-decoration: line-through;
+            font-style: italic;
+            /*background-color: #287c05;*/
+            background-color: #000000;
+        }
+
+        /* Row striping structures - Cleaner row readability contrast */
+        .flight-table tr:nth-child(even) {
+            background-color: #2d333b;
+        }
+
+        /* High-focus, professional semi-translucent slate blue row hover state */
+        .flight-table tr:hover {
+            background-color: rgba(88, 166, 255, 0.12) !important;
+        }
+
+        /* Dynamic visual feedback weights conditional evaluation text styling colors rules */
+        .weight-normal {
+            color: #57ab5a !important; /* Enhanced green tint for better contrast */
+            font-weight: 600;
+        }
+
+        .weight-alert {
+            color: #f47067 !important; /* Enhanced red tint for better contrast */
+            font-weight: bold;
+        }
+
+                /* New Highlight Button Layout Style */
+        .btn-highlight {
+            background-color: #31363e;
+            color: #adbac7;
+            border: 1px solid #444c56;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-highlight:hover {
+            background-color: #444c56;
+            color: #ffffff;
+            border-color: #58a6ff;
+        }
+
+        /* Active Highlight Row State - Vivid Dark Amber/Slate Blend */
+        .flight-table tbody tr.row-highlighted {
+            background-color: #443e2a !important;
+            border-left: 4px solid #fbbf24;
+        }
+
+        /* Remove surrounding borders from the Focus header specifically */
+        .flight-table th:nth-child(1) {
+            border: none;
+            /* Keeps thin top/bottom borders matching your theme if needed, or remove completely */
+            border-top: 1px solid #444c56;
+            border-bottom: 1px solid #444c56;
+        }
+
+
+    /* Single Line Notes Wrapper */
+    .single-line-notes {
+        display: inline-flex;
+        align-items: center;
+        background-color: #22272e; /* Matches your table rows */
+        border: 1px solid #444c56;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-left: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        vertical-align: middle;
+        margin-top: 12px;
     }
-  });
-const links = [
-    'https://clcrtcmobilityprod.emirates.group/scsp/', // RTC
-    'http://aacs.emirates.com/AACSFuture/AACSWEB/IndexNew.aspx?page=FlightInfo/FlightMonitorFRM_NEW1.aspx', // AACS
-    'https://outlook.office365.com/mail/CLCDXBFZ@emirates.com/AAMkADYxNDdlMDQwLTIwZGMtNDk1Yy05NWNhLWYwZTc4YzViNzc2NgAuAAAAAACQuG6hgU1ITZXy10h%2FcFj4AQANvmyZXWGbTK%2BOZfRNxuyRAAZBDHyPAAA%3D', // CLCDXB FZ
-    'https://teams.microsoft.com/v2/?culture=en-us&country=us', // MS TEAMS
-    'https://jayban.github.io/alden/Alden-tracker/',
-    'https://emiratesgroup-my.sharepoint.com/:x:/r/personal/a_ibanez_dnata_com/_layouts/15/Doc.aspx?sourcedoc=%7BE78BE54D-85EB-440E-90B6-3F7112ED1656%7D&file=E-CheckSheet%20V5.0.xlsx&action=default&mobileredirect=true', // ONE DRIVE
-    'https://flydubai.efosweb.com/', //EFOS Weight & Balance
-    'https://businessintelligence.flydubai.com/', //FZ Fuel dashboard
-    'https://fdb.skybook.aero/login',  // SKYBOOK
-    'https://outlook.office365.com/mail/', // Personal Mail
-    'https://outlook.office365.com/mail/DLCFAX@dnata.com/', // EFAX
-    'https://iport.travelport.com/', // Iport
 
-];
+    /* Inline Label Identifier */
+    .single-line-notes label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #58a6ff; /* Signature blue identifier header */
+        letter-spacing: 0.5px;
+        margin-right: 10px;
+        white-space: nowrap;
+    }
 
-links.forEach(url => {
-  window.open(url, '_blank');
+    /* Flat Single Row Input Area */
+    .single-line-notes input[type="text"] {
+        background: none;
+        border: none;
+        color: #e6edf3;
+        font-family: inherit;
+        font-size: 13px;
+        width: 550px; /* Adjust width to fit your spacing layout */
+        padding: 4px 0;
+        text-transform: uppercase; /* Uniform uppercase tracking force */
+    }
+
+    /* Reset focus ring boundaries since container handled elevation */
+    .single-line-notes input[type="text"]:focus {
+        outline: none;
+    }
+
+    /* Dynamic glow effect specifically when user is actively typing */
+    .single-line-notes:focus-within {
+        border-color: #58a6ff;
+        box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.25);
+        background-color: #1c2128;
+    }
+
+    /* Styled Placeholder Text */
+    .single-line-notes input::placeholder {
+        color: #768390;
+        font-size: 11px;
+    }
+       
+        @media print {
+        /* 1. Reset the entire layout so it flows naturally onto multiple pages */
+        html, body {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            height: auto !important;
+            overflow: visible !important;
+            display: block !important; /* Disables flex centering for print */
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* Hides the flight notes panel and toolbar from the print output completely */
+        .app-container, 
+            .section-toolbar, 
+            .textbox-card, 
+            .card-footer,
+            .efile {
+                display: none !important;
+            }
+
+        /* 2. Release the table from the horizontal scroll container */
+        .table-container {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: visible !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            display: block !important;
+        }
+
+        /* 3. Scale and clean the table structure */
+        .flight-table {
+            width: 100% !important;
+            background-color: #ffffff !important;
+            display: table !important;
+        }
+
+        /* 4. RESTORED & OPTIMIZED THE TH ROW FOR PRINTING */
+        thead {
+            display: table-header-group !important; /* Forces headers to repeat on every new page */
+        }
+        
+        .flight-table th {
+            display: table-cell !important;
+            background-color: #f0f4f8 !important; /* Professional light gray/blue background for paper */
+            color: #004085 !important; /* Sharp dark blue for readability */
+            border: 1px solid #444c56 !important;
+            font-size: 11px !important;
+            font-weight: bold !important;
+        }
+
+        /* 5. Style the data cells for high-contrast white paper printing */
+        .flight-table td {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            border: 1px solid #666666 !important; /* Clean gray borders for legibility */
+            font-size: 12px !important; 
+        }
+
+        /* 6. Prevent table rows from getting chopped in half across pages */
+        .flight-table tbody tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            background-color: #ffffff !important;
+        }
+
+        /* =========================================================
+           7. HIDE SEARCH BAR, BUTTONS, AND INTERACTIVE FEATURES
+           ========================================================= */
+        /* added .search-container here to remove the top elements from paper prints */
+        .search-container, 
+        .dashboard-header,
+        .btn-highlight, 
+        button, 
+        .no-print {
+            display: none !important;
+        }
+
+        /* 8. Handle checked status boxes gracefully on white paper */
+        .loadplan-active {
+            background-color: #e2ebd5 !important; /* Light pastel green tint */
+            color: #000000 !important;
+        }
+
+        .efiling-active {
+            background-color: #d1ebd9 !important; /* Light pastel emerald tint */
+            color: #000000 !important;
+        }
+
+        .flight-cell-complete {
+            opacity: 0.6 !important;
+            text-decoration: line-through !important;
+            background-color: #f0f0f0 !important;
+            color: #555555 !important;
+        }
+
+        /* HIDE THE FIRST COLUMN ONLY ON PAPER (Star/Drag Handle Column) */
+        .flight-table th:first-child, 
+        .flight-table td:first-child {
+            display: none !important;
+        }
+    }
+
+    .search-container {
+        margin-bottom: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .global-search-bar {
+        flex-grow: 1;
+        background-color: #1e293b;
+        border: 1px solid #334155;
+        color: white;
+        padding: 10px 14px;
+        border-radius: 6px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .global-search-bar:focus {
+        border-color: #38bdf8;
+    }
+
+    .search-mode-select {
+        background-color: #0f172a;
+        border: 1px solid #38bdf8;
+        color: #e3e3e3;
+        padding: 9px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: bold;
+        outline: none;
+        cursor: pointer;
+    }
+
+   .app-container {
+  width: 95%;          /* Expands the structure horizontally */
+  max-width: 700px;   /* Sets an extra wide ceiling for massive modern monitors */
+  margin: 0 auto;      /* Keeps the wider layout centered nicely */
+  margin-top: 20px;
+}
+
+
+/* Toolbar Simulating Your Top Navigation Bar */
+.section-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #161B26;
+  padding: 10px 16px;
+  border: 1px solid #242B38;
+  border-bottom: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.label-accent {
+  color: #E5C158; /* App Yellow Accent */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.system-tag {
+  background-color: #0B0F19;
+  color: #4CAF50; /* Green badge text */
+  border: 1px dashed #4CAF50;
+  font-size: 11px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+
+
+
+
+
+/* Huge Textbox Styled to Fit Application Inputs */
+textarea {
+  width: 100%;
+  height: 800px;             /* 1. FIXED HEIGHT: Locked at a large size */
+  max-height: 800px;         /* Prevents manual user drag stretching */
+  min-height: 350px;
+  overflow-y: auto;          /* 2. SCROLLABLE: Vertical scrollbar activates if content leaks */
+  
+  background-color: #0B0F19; /* Inverted deep surface for input fields */
+  color: #5bdb4d;
+  font-family: "Courier New", Courier, monospace; 
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 14px;
+  border: 1px solid #242B38;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;              /* 3. Removes the drag resize handle in the corner */
+  outline: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* UI Focus States matching your active tabs */
+textarea:focus {
+  border-color: #E5C158; 
+  box-shadow: 0 0 0 1px #E5C158;
+}
+
+/* Custom modern scrollbar for dark backgrounds */
+textarea::-webkit-scrollbar {
+  width: 10px;
+}
+textarea::-webkit-scrollbar-track {
+  background: #0B0F19;
+  border-radius: 4px;
+}
+textarea::-webkit-scrollbar-thumb {
+  background: #242B38;       /* Blends into the window panel background */
+  border-radius: 4px;
+  border: 2px solid #0B0F19; /* Creates padding space around the thumb track */
+}
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #E5C158;       /* Highlight color when hovering the scrollbar */
+}
+
+
+</style>
+</head>
+<body>
+<tr draggable="true">
+    <!-- Keep your original flight columns exactly as they are here -->
+</tr>
+<tr draggable="true">
+    <!-- Keep your original flight columns exactly as they are here -->
+</tr>
+<div class="search-container">
+    <div style="display: flex; align-items: center; justify-content: flex-start; gap: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width: 100%;">
+
+    <div style="display: flex; margin-right: 5px; gap: 8px; background-color: #1a1e24; border: 1px solid #2b303c; padding: 6px 14px; border-radius: 4px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); white-space: nowrap;">
+        <!-- Glowing Green Status Indicator -->
+        <div style="width: 7px; height: 7px; background-color: #40c057; border-radius: 50%; box-shadow: 0 0 8px #40c057;"></div>
+        <!-- Your Name -->
+        <span style="color: #ffffff; font-weight: 700; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;">PROPERTY OF ALDEN JR</span>
+    </div>
+
+    <!-- Paste your existing action buttons directly here inside this same container -->
+
+</div>
+    <select id="search-column-mode" class="search-mode-select">
+        <option value="flight-only">Search by: Flight Name</option>
+        <option value="all-columns">Search by: All Columns</option>
+    </select>
+    <input type="text" id="dashboard-search-field" class="global-search-bar" placeholder="🔍 Enter Flight Number...">
+</div>
+<!-- Put this button right above your flight tracker table layout -->
+    <div class="table-container" id="myTable">
+    <button onclick="window.print()" style="background-color: #5b6064; color: white; margin-left: 10px; margin-top: 10px; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 15px;">Print Table
+    </button>
+    <button type="button" id="excelScriptBtn" style="background-color: #107c41; color: white; margin-left: 10px; margin-top: 10px; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 15px;">
+        Create Flight Checksheet
+    </button>
+    <button class="btn-action" style="background-color: #55581f; color: white; margin-left: 10px; margin-top: 10px; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 15px;" onclick="generateFolderBatchFile()">Create Folder 📂
+    </button>
+    <div class="single-line-notes">
+        <label for="operationalNotes">Flight Notes:</label>
+        <input type="text" id="operationalNotes" placeholder="ENTER NOTES HERE..." autocomplete="off">
+    </div>
+     <!-- Search E-folder -->
+    <form class="efile" onsubmit="openFormLink(event)" style="margin-left: 8px;display: inline-flex; align-items: center; gap: 8px; background-color: #1a1e24; padding: 4px 8px; border-radius: 4px; border: 1px solid #2b303c; font-family: 'Segoe UI', sans-serif; vertical-align: middle; margin-right: 10px;">
+        
+        <!-- FLT Field Group -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <label for="flightNumber" style="color: #adb5bd; font-size: 11px; font-weight: 700; text-transform: uppercase;">FLT:</label>
+            <input type="text" id="flightNumber" placeholder="Number" required 
+                   style="background-color: #2b303c; color: #ffffff; border: 1px solid #495057; border-radius: 3px; padding: 3px 6px; font-size: 12px; width: 50px; text-align: center; outline: none;"
+                   onfocus="this.style.borderColor='#4dabf7'" onblur="this.style.borderColor='#495057'">
+        </div>
+
+        <!-- STN Field Group -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <label for="outstation" style="color: #adb5bd; font-size: 11px; font-weight: 700; text-transform: uppercase;">STN:</label>
+            <input type="text" id="outstation" value="DXB" placeholder="DXB" maxlength="3" minlength="3" required 
+                   style="background-color: #2b303c; color: #ffffff; border: 1px solid #495057; border-radius: 3px; padding: 3px 6px; font-size: 12px; width: 42px; text-transform: uppercase; text-align: center; outline: none;"
+                   onfocus="this.style.borderColor='#4dabf7'" onblur="this.style.borderColor='#495057@'">
+        </div>
+
+        <!-- Open Action Button -->
+        <button type="submit" 
+                style="background-color: #228be6; color: #ffffff; border: none; border-radius: 3px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap;"
+                onmouseover="this.style.backgroundColor='#1c7ed6'" onmouseout="this.style.backgroundColor='#228be6'">
+            Open Flight E-Folder
+        </button>
+    </form>
+    <div class="card-footer">
+            <a href="https://jayban.github.io/alden/UWS-tracker/" target="_blank" style="color:white;float:right;">(x) NOT ALLOWED BEWARE! </a>
+    </div>
+        <table class="flight-table">
+            <thead>
+                <tr draggable="true">
+                    <th style="width: 10px;"></th> <!-- Add this line here -->
+                    <th>Flight</th>
+                    <th>A/C REG</th> <!-- Added A/C REG column beside Flight -->
+                    <th>OFP</th>
+                    <th>RTOW/RZFW</th>
+                    <th>Crew Config</th>
+                    <th>UWS Final</th>
+                    <th style="min-width: 20px; width: 30px;">Loadplan</th>
+                    <th>UWS LMC</th>
+                    <th>AZFW</th>
+                    <th>ZFW Δ (Diff)</th>
+                    <th>Final Fuel</th>
+                    <th style="border-bottom:2px solid yellow;">LoadSheet</th>
+                    <th>LMC Detail</th>
+                    <th>Remarks</th>
+                    <th style="min-width: 20px; width: 40px;">E-Filing Completed</th>
+                </tr>
+            </thead>
+            <tbody id="flight-data-rows">
+                <!-- Rows dynamically generated here by JavaScript -->
+
+            </tbody>
+        </table>
+        <button type="button" id="addNewRowBtn" style="background-color: #565654; color: white; margin-top: 10px; border: none;  border-radius: 4px; cursor: pointer; font-weight: bold; padding: 7px; margin-bottom:7px; margin-left: 8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ADD ROW
+        </button>
+
+  
+
+
+    </div> 
+
+    
+    <div class="app-container">
+      <!-- Section Header / Tool Block -->
+      <div class="section-toolbar">
+        <span class="label-accent">Notepad:</span>
+        <!-- <span class="system-tag">PROPERTY OF ALDEN JR</span> -->
+      </div>
+
+      <!-- Main Huge Textbox Container -->
+      <div class="textbox-card">
+        <textarea id="huge-textbox" placeholder="ENTER NOTES HERE..." rows="10"></textarea>
+      </div>
+
+    </div>
+        
+
+<script>
+
+        const textarea = document.getElementById('huge-textbox');
+const charCount = document.getElementById('char-count');
+
+textarea.addEventListener('input', function () {
+  // 1. Force Uppercase to match aviation systems layout style
+  this.value = this.value.toUpperCase();
+
+  // 2. Adjust character metric safely without shifting layout heights
+  charCount.textContent = this.value.length;
 });
 
-    function copyText() {
-      var copyText = document.getElementById("myInput");
-      copyText.select();
-      navigator.clipboard.writeText(copyText.value);
-     // alert(copyText.value + " \n\nCopied!: ");
+        // 1. Flight rows creation! RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
+
+
+        // const sampleFlights = ["FZ991", "FZ144", "FZ337", "FZ1133", "FZ974", "FZ966", "FZ978", "FZ1716", "FZ391"];
+
+        (function() {
+    // 1. REUSABLE ROW TEMPLATE FUNCTION
+    function buildAndAppendRow(tbodyElement) {
+        const tr = document.createElement("tr");
+        tr.setAttribute('draggable', 'true');
+        tr.innerHTML = `
+            <td><button class="btn-highlight" onclick="toggleRowHighlight(this)">★</button></td>
+            <td contenteditable="true" data-field="flight-cell" class="prefix-cell flight-code-cell">FZ </td>
+            <td contenteditable="true"></td> 
+            <td class="numeric-center" contenteditable="true" data-field="ezfw" oninput="processWeightVariance(this.parentNode)"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td class="loadplan-cell"><input type="checkbox" class="task-checkbox" onchange="toggleCellClass(this, 'loadplan-active')"></td>
+            <td contenteditable="true"></td>
+            <td class="numeric-center" contenteditable="true" data-field="azfw" oninput="processWeightVariance(this.parentNode)"></td>
+            <td class="numeric-center" data-field="diff">—</td>
+            <td contenteditable="true" class="numeric-center" style="color:#ffd150; font-weight:bold;"></td>
+            <!-- 🎯 FIXED POSITION: The checkbox now sits exactly here to line up under LOADSHEET -->
+            <td class="loadsheet-cell"><input type="checkbox" class="task-checkbox" onchange="toggleLoadsheetClass(this, 'loadsheet-active')"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td class="efiling-cell"><input type="checkbox" class="task-checkbox" onchange="toggleEfilingStatus(this)"></td>
+        `;
+        tbodyElement.appendChild(tr);
     }
 
-    function copyText2() {
-      var copyText2 = document.getElementById("myInput2");
-      copyText2.select();
-      navigator.clipboard.writeText(copyText2.value);
-      //alert(copyText2.value + " \n\nCopied!: ");
+    // 2. INITIAL USER PROMPT SETUP
+    let rowCountInput = prompt("How many flight records rows would you like to create?", "10");
+    let rowCount = parseInt(rowCountInput, 10);
+    if (isNaN(rowCount) || rowCount <= 0) rowCount = 5;
+
+    // 3. WAIT FOR WINDOW ELEMENTS TO LOAD NATIVELY
+    document.addEventListener("DOMContentLoaded", () => {
+        const tbody = document.getElementById("flight-data-rows");
+        
+        // Loop to generate initial row numbers matching user prompt input
+        for (let i = 0; i < rowCount; i++) {
+            buildAndAppendRow(tbody);
+        }
+
+        // 4. ATTACH THE EVENT LISTENER TO YOUR ADD BUTTON
+        const singleRowBtn = document.getElementById("addNewRowBtn");
+        if (singleRowBtn) {
+            singleRowBtn.addEventListener("click", () => {
+                buildAndAppendRow(tbody);
+            });
+        }
+    });
+})();
+
+
+    function generateFolderBatchFile() {
+    const rows = document.querySelectorAll('#flight-data-rows tr');
+    let addedFlights = new Set();
+    let flightFoldersCmd = "";
+
+    rows.forEach(row => {
+        const cells = row.getElementsByTagName('td');
+        
+        // Target index 1, which is explicitly the 2nd column (Flight column)
+        if (cells && cells.length > 1) {
+            let flightNum = cells[1].textContent.trim().toUpperCase();
+            
+            if (flightNum !== "" && flightNum !== "FLIGHT") {
+                
+                // --- MAGIC CLEANING RULE ---
+                // This removes "FZ" and strips any remaining blank spaces 
+                if (flightNum.startsWith("FZ")) {
+                    flightNum = flightNum.replace("FZ", "").trim();
+                }
+
+                // Check again to make sure it isn't empty after stripping "FZ"
+                if (flightNum !== "" && !addedFlights.has(flightNum)) {
+                    addedFlights.add(flightNum);
+                    
+                    // 🎯 FIX: Changed " && " to a newline character "\\n"
+                    // This lets Windows process each folder independently!
+                    flightFoldersCmd += `mkdir "${flightNum}"\n`;
+                }
+            }
+        }
+    });
+
+        if (addedFlights.size === 0) {
+            alert("Please type your flight numbers into the Flight column first!");
+            return;
+        }
+
+        // 🎯 NEW DIRECT COMMAND ASSIGNMENT
+        const commandString = flightFoldersCmd;
+
+        navigator.clipboard.writeText(commandString).then(() => {
+            alert(`Processed ${addedFlights.size} flight folders`);
+        }).catch(err => {
+            alert("Clipboard copy blocked. Please check your browser's clipboard permissions.");
+            console.error(err);
+        });
     }
 
-    function copyText3() {
-      var copyText3 = document.getElementById("myInput3");
-      copyText3.select();
-      navigator.clipboard.writeText(copyText3.value);
-      //alert(copyText2.value + " \n\nCopied!: ");
+
+        // 2. SAFETY FALLBACK FOR WEIGHT VARIANCE
+        if (typeof processWeightVariance !== 'function') {
+            window.processWeightVariance = function(row) {
+                console.log("Processing weight variance data row calculations...");
+            };
+        }
+
+        // 3. GLOBAL ARROW NAVIGATION SYSTEM
+        document.addEventListener('keydown', (e) => {
+            const activeCell = document.activeElement;
+            
+            if (!activeCell || activeCell.tagName !== 'TD' || activeCell.getAttribute('contenteditable') !== 'true') {
+                return;
+            }
+
+            const currentCellIndex = activeCell.cellIndex;
+            const currentRow = activeCell.parentNode;
+            let targetCell = null;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault(); 
+                    const prevRow = currentRow.previousElementSibling;
+                    if (prevRow) targetCell = prevRow.cells[currentCellIndex];
+                    break;
+                    
+                case 'ArrowDown':
+                    e.preventDefault(); 
+                    const nextRow = currentRow.nextElementSibling;
+                    if (nextRow) targetCell = nextRow.cells[currentCellIndex];
+                    break;
+                    
+                case 'ArrowLeft':
+                    const prevCell = activeCell.previousElementSibling;
+                    if (prevCell && prevCell.getAttribute('contenteditable') === 'true') {
+                        e.preventDefault();
+                        targetCell = prevCell;
+                    }
+                    break;
+                    
+                case 'ArrowRight':
+                    const nextCell = activeCell.nextElementSibling;
+                    if (nextCell && nextCell.getAttribute('contenteditable') === 'true') {
+                        e.preventDefault();
+                        targetCell = nextCell;
+                    }
+                    break;
+                    
+                default:
+                    return; 
+            }
+
+            if (targetCell && targetCell.getAttribute('contenteditable') === 'true') {
+                targetCell.focus();
+            }
+        });
+
+        // 4. LOADPLAN STATUS
+        function toggleLoadplanStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            if (checkbox.checked) {
+                cell.classList.add("loadplan-active");
+            } else {
+                cell.classList.remove("loadplan-active");
+            }
+        }
+
+        // 5. E-FILING STATUS
+        function toggleEfilingStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            const row = cell.parentNode;
+            const flightCell = row.querySelector('[data-field="flight-cell"]');
+            
+            if (checkbox.checked) {
+                cell.classList.add("efiling-active");
+                if (flightCell) flightCell.classList.add("flight-cell-complete");
+            } else {
+                cell.classList.remove("efiling-active");
+                if (flightCell) flightCell.classList.remove("flight-cell-complete");
+            }
+        }
+
+
+        // Handles Loadplan color updates
+        function toggleLoadplanStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            if (checkbox.checked) {
+                cell.classList.add("loadplan-active");
+            } else {
+                cell.classList.remove("loadplan-active");
+            }
+        }
+
+        // Handles E-filing background and individual Flight text cross-out
+        function toggleEfilingStatus(checkbox) {
+            const cell = checkbox.parentNode;
+            const row = cell.parentNode;
+            const flightCell = row.querySelector('[data-field="flight-cell"]');
+            
+            if (checkbox.checked) {
+                cell.classList.add("efiling-active");
+                flightCell.classList.add("flight-cell-complete");
+            } else {
+                cell.classList.remove("efiling-active");
+                flightCell.classList.remove("flight-cell-complete");
+            }
+        }
+
+        // Processes mathematical variance verification
+        function processWeightVariance(row) {
+            const ezfwCell = row.querySelector('[data-field="ezfw"]');
+            const azfwCell = row.querySelector('[data-field="azfw"]');
+            const diffCell = row.querySelector('[data-field="diff"]');
+
+            if (!ezfwCell || !azfwCell || !diffCell) return;
+
+            const ezfw = parseFloat(ezfwCell.innerText.trim());
+            const azfw = parseFloat(azfwCell.innerText.trim());
+
+            if (isNaN(ezfw) || isNaN(azfw)) {
+                diffCell.innerText = "—";
+                diffCell.className = "numeric-center";
+                return;
+            }
+
+            const difference = azfw - ezfw;
+            const absoluteDifference = Math.abs(difference); 
+            
+            // Choose the professional indicator arrow based on deviation direction
+            let indicator = "";
+            if (difference > 0) {
+                indicator = "▲ "; // Up arrow for positive weight gain
+            } else if (difference < 0) {
+                indicator = "▼ "; // Down arrow for negative weight drops
+            }
+
+            // Displays the arrow prefix, absolute number, and standard unit tag seamlessly
+            diffCell.innerText = indicator + absoluteDifference + " KG";
+
+            // Evaluate absolute threshold criteria (+ or - 1000)
+            if (absoluteDifference >= 1000) {
+                diffCell.className = "numeric-center weight-alert";  // Turns red for critical gaps >= 1000
+            } else {
+                diffCell.className = "numeric-center weight-normal"; // Turns green for safe variations under 1000
+            }
+        }
+
+        // --- FORCE PLAIN TEXT ONLY ON PASTE ---
+        document.addEventListener('paste', (e) => {
+            // Only intercept if pasting inside an editable table cell
+            const activeCell = document.activeElement;
+            if (activeCell && activeCell.tagName === 'TD' && activeCell.getAttribute('contenteditable') === 'true') {
+                e.preventDefault(); // Stop the default rich-text paste action
+
+                // Get text representation of clipboard data
+                const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+                // Insert the plain text into the current cursor position
+                document.execCommand('insertText', false, text);
+            }
+        });
+
+
+        function setupTableActionDelegation() {
+        const tbody = document.getElementById("flight-data-rows");
+
+        // 1. Monitors checkbox changes to toggle green/emerald backgrounds safely
+        tbody.addEventListener("change", function(e) {
+            const target = e.target;
+            if (target.classList.contains("loadplan-chk")) {
+                target.closest("td").classList.toggle("loadplan-active", target.checked);
+            }
+            if (target.classList.contains("efiling-chk")) {
+                const td = target.closest("td");
+                const tr = target.closest("tr");
+                const flightCell = tr.querySelector(".flight-code-cell");
+                
+                td.classList.toggle("efiling-active", target.checked);
+                if (flightCell) {
+                    flightCell.classList.toggle("flight-cell-complete", target.checked);
+                }
+            }
+        });
+
+        // 2. Monitors Focus button clicks to toggle amber row highlight accents
+        tbody.addEventListener("click", function(e) {
+            if (e.target.classList.contains("btn-highlight")) {
+                e.target.closest("tr").classList.toggle("row-highlighted");
+            }
+        });
     }
-    function copyText4() {
-      var copyText4 = document.getElementById("myInput4");
-      copyText4.select();
-      navigator.clipboard.writeText(copyText4.value);
-      //alert(copyText2.value + " \n\nCopied!: ");
+
+        function setupSafeDragAndDrop() {
+            const tbody = document.getElementById("flight-data-rows");
+            let draggedRow = null;
+
+            tbody.addEventListener("dragstart", (e) => {
+                draggedRow = e.target.closest("tr");
+                if (draggedRow) draggedRow.classList.add("dragging");
+            });
+
+            tbody.addEventListener("dragend", () => {
+                if (draggedRow) draggedRow.classList.remove("dragging");
+                document.querySelectorAll("tr").forEach(tr => tr.classList.remove("drag-over"));
+                draggedRow = null;
+            });
+
+            tbody.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest("tr");
+                if (targetRow && targetRow !== draggedRow && targetRow.parentNode === tbody) {
+                    targetRow.classList.add("drag-over");
+                }
+            });
+
+            tbody.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest("tr");
+                if (targetRow && draggedRow && targetRow !== draggedRow) {
+                    targetRow.classList.remove("drag-over");
+                    
+                    // Calculate cursor placement height over the active target row
+                    const bounding = targetRow.getBoundingClientRect();
+                    const offset = e.clientY - bounding.top;
+                    
+                    // CRUCIAL BUG FIX: Move memory pointers directly instead of text mutations
+                    if (offset > bounding.height / 2) {
+                        targetRow.after(draggedRow);
+                    } else {
+                        targetRow.before(draggedRow);
+                    }
+                }
+            });
+        }
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const tbody = document.getElementById("flight-data-rows");
+
+            // Click Event: Snap the typing cursor to the end of the text
+            tbody.addEventListener("click", (e) => {
+                const cell = e.target.closest('[data-field="flight-cell"]');
+                if (!cell) return;
+
+                // Force cursor to the end of the text string
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(cell);
+                range.collapse(false); // false collapses the range to the end
+                sel.removeAllRanges();
+                sel.addRange(range);
+            });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const tbody = document.getElementById("flight-data-rows");
+            const prefixLength = 3; // Length of "FZ "
+
+            // Helper function to force cursor to the end of the text
+            function forceCursorToEnd(cell) {
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(cell);
+                range.collapse(false); // collapse to the end
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            // Handle both Clicks and Arrow Key navigation
+            ["click", "keyup"].forEach(eventType => {
+                tbody.addEventListener(eventType, (e) => {
+                    const cell = e.target.closest('[data-field="flight-cell"]');
+                    if (!cell) return;
+
+                    const sel = window.getSelection();
+                    
+                    // Check if the cursor position is inside or before the "FZ " prefix
+                    if (sel.anchorNode && (sel.anchorNode === cell || cell.contains(sel.anchorNode))) {
+                        if (sel.anchorOffset < prefixLength) {
+                            forceCursorToEnd(cell);
+                        }
+                    }
+                });
+            });
+        });
+
+        function toggleCellClass(checkboxElement, className) {
+        // 1. Keep your existing class-toggling logic intact
+        const cell = checkboxElement.parentNode;
+        if (checkboxElement.checked) {
+            cell.classList.add(className);
+            
+            // 🎯 Lock in the precise individual timestamp the millisecond they click it
+            const timeNow = new Date();
+            const timeString = timeNow.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            checkboxElement.setAttribute('data-timestamp', timeString);
+        } else {
+            cell.classList.remove(className);
+            
+            // 🗑️ Clear it instantly if they uncheck it
+            checkboxElement.removeAttribute('data-timestamp');
+        }
     }
 
-  function copyText5() {
-      var copyText5 = document.getElementById("myInput5");
-      copyText5.select();
-      navigator.clipboard.writeText(copyText5.value);
-      //alert(copyText2.value + " \n\nCopied!: ");
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const tbody = document.querySelector('.flight-table tbody') || document.getElementById("flight-data-rows");
+    if (!tbody) return;
+
+    // 1. Automatically inject draggable="true" into all existing table rows
+    const rows = tbody.querySelectorAll('tr');
+    rows.forEach(row => {
+        row.setAttribute('draggable', 'true');
+    });
+
+    // --- Keep your drag and drop logic below this line ---
+    let draggedRow = null;
+
+    tbody.addEventListener('dragstart', (e) => {
+        const row = e.target.closest('tr');
+        if (!row) return;
+        draggedRow = row;
+        row.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', '');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    tbody.addEventListener('dragend', (e) => {
+        const row = e.target.closest('tr');
+        if (row) row.classList.remove('dragging');
+        tbody.querySelectorAll('tr').forEach(el => el.classList.remove('drag-over'));
+        draggedRow = null;
+    });
+
+    tbody.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const row = e.target.closest('tr');
+        if (!row || row === draggedRow) return;
+        e.dataTransfer.dropEffect = 'move';
+    });
+
+    tbody.addEventListener('dragenter', (e) => {
+        const row = e.target.closest('tr');
+        if (!row || row === draggedRow) return;
+        row.classList.add('drag-over');
+    });
+
+    tbody.addEventListener('dragleave', (e) => {
+        const row = e.target.closest('tr');
+        if (row) row.classList.remove('drag-over');
+    });
+
+    // 🎯 FIXED DROP HANDLER: Checkboxes will now remain ticked!
+    tbody.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const targetRow = e.target.closest('tr');
+        if (!targetRow || targetRow === draggedRow) return;
+
+        targetRow.classList.remove('drag-over');
+
+        const allRows = Array.from(tbody.children);
+        const draggedIndex = allRows.indexOf(draggedRow);
+        const targetIndex = allRows.indexOf(targetRow);
+
+        if (draggedIndex < targetIndex) {
+            tbody.insertBefore(draggedRow, targetRow.nextSibling);
+        } else {
+            tbody.insertBefore(draggedRow, targetRow);
+        }
+    });
+});
+
+
+
+
+
+    
+
+
+
+        // Node-Safe Drag Engine (Preserves checked elements and written cell data)
+        function initializeDragAndDropEngine(tbody) {
+            let draggedRow = null;
+
+            tbody.addEventListener('dragstart', (e) => {
+                const row = e.target.closest('tr');
+                
+                // Block dragging if someone is actively typing inside an editable cell text field
+                if (!row || document.activeElement.getAttribute('contenteditable') === 'true') {
+                    e.preventDefault();
+                    return;
+                }
+                draggedRow = row;
+                row.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', '');
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            tbody.addEventListener('dragend', (e) => {
+                const row = e.target.closest('tr');
+                if (row) row.classList.remove('dragging');
+                document.querySelectorAll('#flight-data-rows tr').forEach(el => el.classList.remove('drag-over'));
+                draggedRow = null;
+            });
+
+            tbody.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const row = e.target.closest('tr');
+                if (!row || row === draggedRow) return;
+                e.dataTransfer.dropEffect = 'move';
+            });
+
+            tbody.addEventListener('dragenter', (e) => {
+                const row = e.target.closest('tr');
+                if (!row || row === draggedRow) return;
+                row.classList.add('drag-over');
+            });
+
+            tbody.addEventListener('dragleave', (e) => {
+                const row = e.target.closest('tr');
+                if (row) row.classList.remove('drag-over');
+            });
+
+            tbody.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const targetRow = e.target.closest('tr');
+                if (!targetRow || targetRow === draggedRow) return;
+
+                targetRow.classList.remove('drag-over');
+
+                const allRows = Array.from(tbody.children);
+                const draggedIndex = allRows.indexOf(draggedRow);
+                const targetIndex = allRows.indexOf(targetRow);
+
+                // Moves the actual row containers in the DOM tree, keeping all ticks and text 100% safe
+                if (draggedIndex < targetIndex) {
+                    tbody.insertBefore(draggedRow, targetRow.nextSibling);
+                } else {
+                    tbody.insertBefore(draggedRow, targetRow);
+                }
+            });
+        }
+
+        // Click handler function to highlight/unhighlight flight rows instantly
+        function toggleRowHighlight(button) {
+            const row = button.closest('tr');
+            if (row) {
+                row.classList.toggle('row-highlighted');
+                // Switch star symbols to provide visual feedback
+                button.textContent = row.classList.contains('row-highlighted') ? '⭐' : '★';
+            }
+        }
+
+
+
+
+     
+
+    document.getElementById('excelScriptBtn').addEventListener('click', async function() {
+    // 🎯 CONFIGURATION: Explicitly mapped to match your web table columns
+    const flightColumnNumber = 2;   // Column with "FZ 1"
+    const regColumnNumber = 3;      // Column with "A6-FEC"
+    const loadplanColumnNumber = 8; // Column containing the loadplan checkbox
+    const loadsheetColumnNumber = 13; // 🆕 ADDED: Column containing your new loadsheet checkbox
+
+    // Target the table rows inside the tbody specifically to avoid miscounting header structure
+    const tableRows = document.querySelectorAll("table tbody tr");
+    
+    // If your table doesn't have a tbody, fallback to all rows
+    const rowsToProcess = tableRows.length > 0 ? tableRows : document.querySelectorAll("table tr");
+    
+    const uniqueFlightsMap = [];
+    const seenFlights = new Set();
+
+    rowsToProcess.forEach(row => {
+        const flightCell = row.querySelector(`td:nth-child(${flightColumnNumber})`);
+        const regCell = row.querySelector(`td:nth-child(${regColumnNumber})`);
+        const loadplanCell = row.querySelector(`td:nth-child(${loadplanColumnNumber})`);
+        const loadsheetCell = row.querySelector(`td:nth-child(${loadsheetColumnNumber})`); // 🆕 ADDED
+        
+        if (flightCell) {
+            // Helper function to handle BOTH contenteditable text cells AND input elements seamlessly
+            const getCleanValue = (cell) => {
+                if (!cell) return "";
+                const inputElement = cell.querySelector("input[type='text'], input:not([type]), select");
+                const rawText = inputElement ? inputElement.value : cell.textContent;
+                return rawText.trim().toUpperCase();
+            };
+
+            const flightText = getCleanValue(flightCell);
+            let regText = getCleanValue(regCell);
+            
+            // 🎯 LOADPLAN INDIVIDUAL TIMING ENGINE (G25)
+            let loadplanTime = "";
+            if (loadplanCell) {
+                const checkbox = loadplanCell.querySelector("input[type='checkbox']");
+                if (checkbox && checkbox.checked) {
+                    if (checkbox.getAttribute('data-timestamp')) {
+                        loadplanTime = checkbox.getAttribute('data-timestamp');
+                    } else {
+                        const timeNow = new Date();
+                        loadplanTime = timeNow.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                        checkbox.setAttribute('data-timestamp', loadplanTime);
+                    }
+                } else if (checkbox) {
+                    checkbox.removeAttribute('data-timestamp');
+                }
+            }
+
+            // 🎯 LOADSHEET INDIVIDUAL TIMING ENGINE (G28) - 🆕 ADDED
+            let loadsheetTime = "";
+            if (loadsheetCell) {
+                const checkbox = loadsheetCell.querySelector("input[type='checkbox']");
+                if (checkbox && checkbox.checked) {
+                    if (checkbox.getAttribute('data-loadsheet-timestamp')) {
+                        loadsheetTime = checkbox.getAttribute('data-loadsheet-timestamp');
+                    } else {
+                        const timeNow = new Date();
+                        loadsheetTime = timeNow.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                        checkbox.setAttribute('data-loadsheet-timestamp', loadsheetTime);
+                    }
+                } else if (checkbox) {
+                    checkbox.removeAttribute('data-loadsheet-timestamp');
+                }
+            }
+            
+            // 🛑 STRICT FILTER: Skip empty rows, header rows, or rows that only contain the baseline placeholder "FZ"
+            if (flightText && flightText !== "FZ" && flightText !== "FLIGHT" && flightText !== "FZ ") {
+                
+                if (!regText) {
+                    regText = ""; 
+                }
+
+                // Filter out duplicate flight names so Excel tab generation doesn't crash
+                if (!seenFlights.has(flightText)) {
+                    seenFlights.add(flightText);
+                    uniqueFlightsMap.push({
+                        flight: flightText,
+                        reg: regText,
+                        lpTimestamp: loadplanTime, // 📦 Packaged Loadplan
+                        lsTimestamp: loadsheetTime  // 📦 Packaged Loadsheet
+                    });
+                }
+            }
+        }
+    });
+
+    if (uniqueFlightsMap.length === 0) {
+        alert("No valid flight records found. Ensure rows contain more than just the baseline 'FZ' placeholder text.");
+        return;
     }
 
-    function copyText6() {
-      var copyText6 = document.getElementById("myInput6");
-      copyText6.select();
-      navigator.clipboard.writeText(copyText6.value);
-      //alert(copyText2.value + " \n\nCopied!: ");
+    // 2. Format the payload into an array of objects that Office Scripts can digest
+    const arrayString = uniqueFlightsMap.map(item => {
+        const cleanFlight = item.flight.replace(/"/g, '\\"');
+        const cleanReg = item.reg.replace(/"/g, '\\"');
+        return `        { flight: "${cleanFlight}", reg: "${cleanReg}", lpTime: "${item.lpTimestamp}", lsTime: "${item.lsTimestamp}" }`;
+    }).join(",\n");
+
+    // 3. Build the complete ready-to-run script payload text block
+    const fullScriptCode = `function main(workbook: ExcelScript.Workbook) {
+        // Automatically grabbed from your flight tracker app!
+        let flightData = [
+    \n${arrayString}
+        ];
+
+        let templateSheet = workbook.getActiveWorksheet();
+        
+        flightData.forEach(data => {
+            let safeName = data.flight.replace(/[\\\\\\/\\?\\*\\:\\[\\]]/g, "").substring(0, 31);
+            let targetSheet = workbook.getWorksheet(safeName);
+            
+            if (!targetSheet) {
+                targetSheet = templateSheet.copy(ExcelScript.WorksheetPositionType.end);
+                targetSheet.setName(safeName);
+            }
+            
+            targetSheet.getRange("C3").setValue(safeName);
+            
+            targetSheet.getRange("C4").setValue(data.reg);
+            
+            if (data.lpTime) {
+                targetSheet.getRange("G25").setValue(data.lpTime);
+            } else {
+                targetSheet.getRange("G25").setValue("");
+            }
+
+            if (data.lsTime) {
+                targetSheet.getRange("G28").setValue(data.lsTime);
+            } else {
+                targetSheet.getRange("G28").setValue("");
+            }
+        });
+        
+        console.log("Successfully updated all flight sheets with individual completion timestamps!");
+    }`;
+
+    // 4. Copy directly to clipboard without downloading any file
+    try {
+        await navigator.clipboard.writeText(fullScriptCode);
+        
+        // Visual confirmation: Change button appearance temporarily to confirm copy
+        const btn = document.getElementById('excelScriptBtn');
+        const originalText = btn.innerText;
+        const originalBg = btn.style.backgroundColor;
+        
+        btn.innerText = "✓ Code Copied!";
+        btn.style.backgroundColor = "#219653";
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.backgroundColor = originalBg;
+        }, 2000);
+        
+    } catch (err) {
+        alert("Failed to copy to clipboard automatically. Check your browser permissions.");
+    }
+});
+
+
+
+
+
+
+
+
+
+// ==========================================
+// HIGH-PERFORMANCE CONTENTEDITABLE SEARCH ENGINE
+// ==========================================
+function executeFilteredSearch() {
+    // 1. Get the lowercase text typed into your search bar
+    const query = document.getElementById("dashboard-search-field").value.toLowerCase().trim();
+    const searchMode = document.getElementById("search-column-mode").value;
+
+    // 2. Loop through every row inside your specific #flight-data-rows container
+    document.querySelectorAll("#flight-data-rows tr").forEach(row => {
+        let isMatch = false;
+
+        // Target your specific Flight code cell inside column position 2
+        const flightCell = row.querySelector(".flight-code-cell");
+        const flightValue = flightCell ? flightCell.textContent.toLowerCase() : "";
+
+        if (searchMode === "flight-only") {
+            // Strict Mode: Only evaluate characters inside the Flight Name block
+            if (flightValue.includes(query)) {
+                isMatch = true;
+            }
+        } else {
+            // Global Mode: Scan text across all contenteditable cells inside this row
+            if (row.textContent.toLowerCase().includes(query)) {
+                isMatch = true;
+            }
+        }
+
+        // 3. Toggle row display visibility state instantly
+        if (query === "" || isMatch) {
+            row.style.display = ""; // Renders the row normally
+        } else {
+            row.style.display = "none"; // Hides the row from view
+        }
+    });
+}
+
+// Bind the new robust text execution handlers straight to your search fields
+document.getElementById("dashboard-search-field").addEventListener("input", executeFilteredSearch);
+document.getElementById("search-column-mode").addEventListener("change", executeFilteredSearch);
+
+
+
+    function generateAndOpenLink(button) {
+        // 1. Get today's date formatted as 2-digit day + 3-letter month (e.g., "01OCT")
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const formattedToday = day + months[today.getMonth()];
+
+        // 2. Define the baseline template
+        const baseTemplate = `FZ%20Electronic%20Flight%20Files/Forms/AllItems.aspx?id=%2Fteams%2FFZeFiling%2FFZ%20Electronic%20Flight%20Files%2FFZ%2F${formattedToday}%2FFZ991%20${formattedToday}%20DXB&viewid=e1f93d5d-7769-4fa4-8b45-f83eedd9fefc`;
+        
+        // 3. Find the row belonging to the clicked button
+        const row = button.closest('tr');
+        
+        // 4. Look for the cell using its class name inside this specific row
+        let cell = row.querySelector('.flight-code-cell');
+        let cellValue = cell ? cell.textContent.trim() : "";
+        
+        // 5. Strip any "FZ" prefix if present
+        let flightNumberOnly = cellValue.toUpperCase().replace(/\s+/g, '').replace('FZ', '').padStart(3, '0');
+
+        // 6. Replace '991' in the string template with the row's flight number
+        let dynamicUrl = 'https://emiratesgroup.sharepoint.com/teams/FZeFiling/' + baseTemplate.replace('991', flightNumberOnly);
+
+        // 7. Open the final generated SharePoint link
+        window.open(dynamicUrl, '_blank');
     }
 
-  function copyText7() {
-      var copyText7 = document.getElementById("myInput7");
-      copyText7.select();
-      navigator.clipboard.writeText(copyText7.value);
-      //alert(copyText2.value + " \n\nCopied!: ");
+    // Automatically pre-populates the date field to today's date when the page loads
+    document.addEventListener("DOMContentLoaded", () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('flightDate').value = today;
+    });
+
+    function openFormLink(event) {
+        // 1. Prevent the browser from refreshing the page
+        event.preventDefault();
+
+        // 2. Fetch the values directly from the form inputs
+        const flightInput = document.getElementById('flightNumber').value;
+        const outstationInput = document.getElementById('outstation').value;
+
+        // Safety check to ensure fields are not empty
+        if (!flightInput || !outstationInput) return;
+
+        // 3. Automatically get today's date and format as DDMMM (e.g., "01OCT")
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        const formattedDate = day + months[today.getMonth()];
+
+        // 4. Sanitize Flight Number (e.g., "FZ 905" -> "905")
+        let flightNumberOnly = flightInput.toUpperCase().replace(/\s+/g, '').replace('FZ', '').padStart(3, '0');
+
+        // 5. Sanitize Outstation Code (e.g., "jib" -> "JIB")
+        let outstationCode = outstationInput.toUpperCase().trim();
+
+        // 6. Build the destination baseline path with your dynamic parameters
+        const baseTemplate = `FZ%20Electronic%20Flight%20Files/Forms/AllItems.aspx?id=%2Fteams%2FFZeFiling%2FFZ%20Electronic%20Flight%20Files%2FFZ%2F${formattedDate}%2FFZ${flightNumberOnly}%20${formattedDate}%20${outstationCode}&viewid=e1f93d5d-7769-4fa4-8b45-f83eedd9fefc`;
+        
+        // 7. Combine into the absolute SharePoint URL
+        let finalUrl = 'https://emiratesgroup.sharepoint.com/teams/FZeFiling/' + baseTemplate;
+
+        // 8. Open the complete dynamic link in a clean browser tab
+        window.open(finalUrl, '_blank');
     }
 
-
-</script>
-
-
-
-
-
-
-
+    </script>
+</body>
+</html>
