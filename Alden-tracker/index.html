@@ -20,7 +20,7 @@
         /* Container to handle overflow scrolling safely */
         .table-container {
             width: 100%;
-            max-width: 1800px; /* Account for all columns uniformly */
+            max-width: 1500px; /* Account for all columns uniformly */
             overflow-x: auto;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
             border-radius: 8px;
@@ -52,7 +52,7 @@
 
        /* All table data cells aligned strictly in the center */
         .flight-table td {
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #373e47; 
             color: #e6edf3;
             text-align: center;
@@ -81,8 +81,6 @@
             background-color: #26384f;
             outline: 2px dashed #58a6ff;
         }
-
-
 
 
         /* Monospace font for numerical columns keeping center alignment */
@@ -474,6 +472,22 @@ textarea::-webkit-scrollbar-thumb:hover {
   background: #E5C158;       /* Highlight color when hovering the scrollbar */
 }
 
+ /* Make the iframe wrapper responsive (16:9 aspect ratio or fixed height) */
+        .excel-container {
+            position: relative;
+            width: 100%;
+            height: 600px; /* Adjust height as needed */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .excel-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
 
 </style>
 </head>
@@ -539,9 +553,12 @@ textarea::-webkit-scrollbar-thumb:hover {
         <button type="submit" 
                 style="background-color: #228be6; color: #ffffff; border: none; border-radius: 3px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap;"
                 onmouseover="this.style.backgroundColor='#1c7ed6'" onmouseout="this.style.backgroundColor='#228be6'">
-            Open Flight E-Folder
+            Open Flight E-Folder 
         </button>
-    </form>
+    </form>
+ <!--    <div class="card-footer">
+            <a href="https://jayban.github.io/alden/UWS-tracker/" target="_blank" style="color:white;float:right;">(x) NOT ALLOWED BEWARE! </a>
+    </div> -->
         <table class="flight-table">
             <thead>
                 <tr draggable="true">
@@ -572,11 +589,10 @@ textarea::-webkit-scrollbar-thumb:hover {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> ADD ROW
         </button>
 
-  
-
-
     </div> 
 
+    
+  
     
     <div class="app-container">
       <!-- Section Header / Tool Block -->
@@ -591,7 +607,6 @@ textarea::-webkit-scrollbar-thumb:hover {
       </div>
 
     </div>
-        
 
 <script>
 
@@ -607,9 +622,6 @@ textarea.addEventListener('input', function () {
 });
 
         // 1. Flight rows creation! RUN THIS IMMEDIATELY BEFORE ANY OTHER CODE CAN CRASH
-
-
-        // const sampleFlights = ["FZ991", "FZ144", "FZ337", "FZ1133", "FZ974", "FZ966", "FZ978", "FZ1716", "FZ391"];
 
         (function() {
     // 1. REUSABLE ROW TEMPLATE FUNCTION
